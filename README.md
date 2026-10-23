@@ -8,6 +8,10 @@ This is a research repository. It does not propose a standard, ship a library, o
 document a product. Where a note records a gap between traditional structured finance and
 the on chain versions, it records it as a finding about the sector.
 
+A two tranche lending pool rebuilt from Centrifuge's Tinlake, with the waterfall rules
+written down and tested, lives in
+[Hooke-Tinlake-Trancher](https://github.com/saintsama98/Hooke-Tinlake-Trancher).
+
 ## Organisation
 
 Every directory holds one document, numbered in reading order. Sections one to six are
