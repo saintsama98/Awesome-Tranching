@@ -1,4 +1,6 @@
-# Tranching in DeFi
+# Awesome-Tranching
+
+Tranching in DeFi: an open research repository on how tranching works on chain.
 
 Research on how tranching works on chain: what it is, the forms it takes, who is running
 it, how liquidity behaves inside it, and what the live systems actually do when you work
@@ -91,3 +93,11 @@ text says so rather than filling the gap, and terms with no source at all are re
 
 There are no diagrams. Everything is prose, tables, or the formulas a protocol publishes.
 Deprecated systems are covered only where a live system cannot be understood without them.
+
+## Status
+
+Ongoing research. Corrections, better sources and new material are welcome. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`METHOD.md`](./METHOD.md) before opening a pull request.
+
+## License
+
+The prose is licensed under CC-BY-4.0, see [`LICENSE-SPEC`](./LICENSE-SPEC). The code, meaning the check scripts under `.github/`, is MIT, see [`LICENSE`](./LICENSE).
