@@ -2,6 +2,8 @@
 
 Tranching in DeFi: an open research repository on how tranching works on chain.
 
+> This project was developed privately and published once it had been tested against its original design. Its full development history is published on a single `main` branch so reviewers can follow it in one place.
+
 Research on how tranching works on chain: what it is, the forms it takes, who is running
 it, how liquidity behaves inside it, and what the live systems actually do when you work
 through their economics.
