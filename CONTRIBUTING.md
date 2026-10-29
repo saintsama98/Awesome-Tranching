@@ -1,15 +1,16 @@
 # Contributing
 
 This is an open research repository on tranching. Corrections, better sources and new
-material are welcome, and anyone is welcome to comment on an issue or pick one up. The
-standards applied to submissions are set out in [`METHOD.md`](./METHOD.md) and are worth
-reading before opening a pull request.
+material are welcome. Contributions are taken through issues, and the text in this
+repository is written and maintained by its author. The standards applied to material are
+set out in [`METHOD.md`](./METHOD.md) and are worth reading before opening an issue.
 
 ## Ways to contribute
 
-Open an issue to report an error, question a claim, or propose a protocol worth covering.
-Issues are the open work thread here. Open a pull request for a correction, an addition to
-an existing document, or a new protocol study.
+Open an issue to report an error, question a claim, point to a better source, or propose a
+protocol worth covering. Issues are the open work thread here. Pull requests are not
+merged; a correction or new material proposed in an issue is written into the documents
+with credit in the issue thread.
 
 ## What goes where
 
@@ -53,5 +54,6 @@ Write in stacked paragraphs with headings that are statements. No diagrams.
 
 ## Licensing
 
-Contributions are licensed under the dual scheme of this repository: CC-BY-4.0 for prose
-and MIT for any code. See [`LICENSE`](./LICENSE) and [`LICENSE-SPEC`](./LICENSE-SPEC).
+Material proposed in an issue may be included under the licenses of this repository: CC BY
+4.0 for prose and MIT for code. See [`LICENSE-CC-BY-4.0`](./LICENSE-CC-BY-4.0) and
+[`LICENSE`](./LICENSE).

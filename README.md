@@ -98,8 +98,8 @@ Deprecated systems are covered only where a live system cannot be understood wit
 
 ## Status
 
-Ongoing research. Corrections, better sources and new material are welcome. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`METHOD.md`](./METHOD.md) before opening a pull request.
+Ongoing research. Corrections, better sources and new material are welcome. Contributions are taken through issues; see [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`METHOD.md`](./METHOD.md).
 
 ## License
 
-The prose is licensed under CC-BY-4.0, see [`LICENSE-SPEC`](./LICENSE-SPEC). The code, meaning the check scripts under `.github/`, is MIT, see [`LICENSE`](./LICENSE).
+The prose, meaning every Markdown document in this repository, is licensed under CC BY 4.0, see [`LICENSE-CC-BY-4.0`](./LICENSE-CC-BY-4.0). The code, meaning the check scripts under `.github/`, is licensed under MIT, see [`LICENSE`](./LICENSE). Copyright 2026 adiii.eth.
