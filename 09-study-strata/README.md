@@ -4,7 +4,7 @@
 > published parameter set per market. This document works through the economics from what
 > enters the structure to what each party is left holding.
 
-Strata is a generalised risk tranching protocol. A single engine splits a yield source
+Strata is a generalized risk tranching protocol. A single engine splits a yield source
 into a senior and a junior tranche, and the same engine has been pointed at several
 different strategies without being rewritten for any of them. It launched on Ethena USDe
 in October 2025 and has since been extended to other sources including Neutrl NUSD,
@@ -40,10 +40,10 @@ writing.
 
 ## 1. Structural summary
 
-Strata is not a yield source. It is a wrapper that interposes a two tranche capital structure between a depositor and an external yield strategy, and it is deliberately generic over that strategy: the same engine is applied to a delta neutral synthetic dollar (Ethena), a market neutral fund (Neutrl, M1 Capital), a tokenised preferred equity dividend (Strategy's STRC via Saturn), and a warehouse lending facility financing home equity lines of credit (Figure via Hastra). Source: [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview), [market pages](https://docs.strata.markets/).
+Strata is not a yield source. It is a wrapper that interposes a two tranche capital structure between a depositor and an external yield strategy, and it is deliberately generic over that strategy: the same engine is applied to a delta neutral synthetic dollar (Ethena), a market neutral fund (Neutrl, M1 Capital), a tokenized preferred equity dividend (Strategy's STRC via Saturn), and a warehouse lending facility financing home equity lines of credit (Figure via Hastra). Source: [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview), [market pages](https://docs.strata.markets/).
 
 Each market is assembled from the same set of functional parts, and it is worth naming
-them by what they do rather than by what they are called, because the division of labour
+them by what they do rather than by what they are called, because the division of labor
 is the design. There is a senior claim and a junior claim, both of which are transferable
 across chains. There is an orchestrator that sequences the accounting and the calls into
 the strategy. There is a calculation layer that is pure, holding no assets and computing
@@ -68,9 +68,9 @@ Three distinct inflows drive the model. They are of different kinds and must not
 
 ### 2.1 Principal
 
-A depositor supplies a base asset and receives shares in one tranche. The accepted asset set is per market and deliberately wide at the entry point: the Ethena market accepts `USDe` or `sUSDe`; the Neutrl market accepts `NUSD`, `USDC`, `USDT`, `USDe`, or `sNUSD`; the Midas and Hastra markets accept `USDC`; the Saturn market accepts `USDat`. A `TrancheDepositor` utility normalises the input and routes it. Minting fees are documented as waived across all markets at the time of writing. Sources: [srUSDe](https://docs.strata.markets/markets/ethena-usde/srusde), [jrNUSD](https://docs.strata.markets/markets/neutrl-nusd/jrnusd).
+A depositor supplies a base asset and receives shares in one tranche. The accepted asset set is per market and deliberately wide at the entry point: the Ethena market accepts `USDe` or `sUSDe`; the Neutrl market accepts `NUSD`, `USDC`, `USDT`, `USDe`, or `sNUSD`; the Midas and Hastra markets accept `USDC`; the Saturn market accepts `USDat`. A `TrancheDepositor` utility normalizes the input and routes it. Minting fees are documented as waived across all markets at the time of writing. Sources: [srUSDe](https://docs.strata.markets/markets/ethena-usde/srusde), [jrNUSD](https://docs.strata.markets/markets/neutrl-nusd/jrnusd).
 
-Principal is then forwarded to the `Strategy`, which stakes it into the underlying instrument — `sUSDe`, `sNUSD`, `mHYPER`, `mM1-USD`, STRC, or Democratized Prime. The tranche vaults therefore never hold idle base asset in the steady state; they hold accounting claims against a single commingled position.
+Principal is then forwarded to the `Strategy`, which stakes it into the underlying instrument: `sUSDe`, `sNUSD`, `mHYPER`, `mM1-USD`, STRC, or Democratized Prime. The tranche vaults therefore never hold idle base asset in the steady state; they hold accounting claims against a single commingled position.
 
 ### 2.2 Yield
 
@@ -107,8 +107,8 @@ A benchmark of 0% (mM1-USD) reduces the senior claim to a pure proportional spli
 
 There is no scheduled accrual, no epoch, and no keeper driven settlement. The model advances **lazily, on interaction**. Two classes of event move it:
 
-1. **Any protocol action** — deposit, mint, withdraw, or redeem on either tranche. Each begins by calling Update Accounting before any share arithmetic is performed.
-2. **A feed update** — `onAprChanged` or `updateRoundData`, called by `UPDATER_FEED_ROLE`, which is not timelocked.
+1. **Any protocol action**: deposit, mint, withdraw, or redeem on either tranche. Each begins by calling Update Accounting before any share arithmetic is performed.
+2. **A feed update**: `onAprChanged` or `updateRoundData`, called by `UPDATER_FEED_ROLE`, which is not timelocked.
 
 Between events, no state changes. The interval `t0 → t1` over which yield is attributed is therefore the interval between interactions, not a fixed period. This is the design Quantstamp audited under the scope name "discrete accounting mechanism". Sources: [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview), [Roles and Permissions](https://docs.strata.markets/technical-documentation/roles-and-permissions), [Audits](https://docs.strata.markets/technical-documentation/audits).
 
@@ -121,11 +121,11 @@ The ordered sequence executed on each trigger:
 5. The senior target gain is computed (Section 4) and **debited from `jrtTVL`, credited to `srtTVL`**.
 6. The invariant `jrtTVL + srtTVL + reserveTVL == totalTVL` is restored.
 
-Step 5 is the waterfall. It is expressed as a transfer out of the junior balance rather than as a priority over an incoming payment, and it is unconditional in sign — the junior balance is debited whether or not step 4 credited anything. That single property is what makes the loss waterfall and the income waterfall the same code path.
+Step 5 is the waterfall. It is expressed as a transfer out of the junior balance rather than as a priority over an incoming payment, and it is unconditional in sign: the junior balance is debited whether or not step 4 credited anything. That single property is what makes the loss waterfall and the income waterfall the same code path.
 
 ---
 
-## 4. The division rule — Dynamic Yield Split
+## 4. The division rule: Dynamic Yield Split
 
 ### 4.1 The stated formulae
 
@@ -142,7 +142,7 @@ Growth_Factor  =  ExchangeRate_T1 / ExchangeRate_T0 − 1
 APR_base       =  Growth_Factor / (T1 − T0) × 1 year
 ```
 
-The risk premium — the fraction of the base yield that the senior tranche surrenders to the junior tranche in exchange for the loss protection it receives — is a one parameter power law in the senior share:
+The risk premium, the fraction of the base yield that the senior tranche surrenders to the junior tranche in exchange for the loss protection it receives, is a one parameter power law in the senior share:
 
 ```
 Risk_Premium_sr  =  x  +  y · r^k
@@ -212,7 +212,7 @@ Published parameters, all markets using `k = 0.3`:
 
 Source: [Dynamic Yield Split](https://docs.strata.markets/protocol-mechanism/dynamic-yield-split).
 
-An exponent of `0.3` makes `r^k` strongly concave, so nearly all of the premium's variation occurs at senior shares below 50% — a region the protocol never occupies, because a senior share of 50% corresponds to 200% coverage. Evaluating the Ethena curve across the domain (*derived*):
+An exponent of `0.3` makes `r^k` strongly concave, so nearly all of the premium's variation occurs at senior shares below 50%: a region the protocol never occupies, because a senior share of 50% corresponds to 200% coverage. Evaluating the Ethena curve across the domain (*derived*):
 
 | `r` | Coverage `1/r` | `Risk_Premium_sr` | `λ = r/(1−r)` |
 | --- | --- | --- | --- |
@@ -225,9 +225,9 @@ An exponent of `0.3` makes `r^k` strongly concave, so nearly all of the premium'
 | 0.9524 | 105.0% | 22.32% | 20.01 |
 | 1.00 | 100.0% | 22.50% | ∞ |
 
-Over the entire operating range from 200% coverage down to the 105% circuit breaker, the Ethena premium moves 20.15% → 22.32% — a span of **2.17 percentage points of the base APY**. The equivalent spans for the other markets are 2.82pp (Neutrl, both Midas markets) and 1.41pp (Hastra).
+Over the entire operating range from 200% coverage down to the 105% circuit breaker, the Ethena premium moves 20.15% → 22.32%: a span of **2.17 percentage points of the base APY**. The equivalent spans for the other markets are 2.82pp (Neutrl, both Midas markets) and 1.41pp (Hastra).
 
-The economic reading is that the yield split is, in practice, a near static proportional division with a marginal tilt, and that the compensation the junior tranche actually receives for taking incremental risk comes almost entirely from `λ` — the shrinking of its own denominator — rather than from any repricing by the premium curve. The premium is close to constant; the leverage is not. A protocol seeking a genuinely rate responsive premium in the 100–130% coverage band would need `k` well above 1, not below.
+The economic reading is that the yield split is, in practice, a near static proportional division with a marginal tilt, and that the compensation the junior tranche actually receives for taking incremental risk comes almost entirely from `λ`, the shrinking of its own denominator, rather than from any repricing by the premium curve. The premium is close to constant; the leverage is not. A protocol seeking a genuinely rate responsive premium in the 100–130% coverage band would need `k` well above 1, not below.
 
 The Saturn market is the limiting case and is instructive: `x = 100%, y = 0%` sets `Risk_Premium_sr = 100%` identically, so `APR_base · (1 − 1) = 0` and the `MAX` always selects the floor. The senior claim there is a **fixed rate instrument** paying 65% of the STRC dividend, with the junior tranche taking the entire residual and the entire variance. The same engine expresses both a participating senior and a fixed rate senior purely through parameter choice.
 
@@ -237,13 +237,13 @@ The Saturn market is the limiting case and is instructive: `x = 100%, y = 0%` se
 
 Value leaves the structure at three points.
 
-**Performance fee** — a fixed percentage of the yield on pooled collateral, allocated to the protocol treasury. Levied on the pool, and therefore ahead of the tranche split, so it reduces `APR_base` for both tranches proportionally rather than falling on either one. Values: 5% (Ethena, Hastra PRIME), 7.5% (Neutrl, mHYPER, mM1-USD), 0% (Saturn USDat).
+**Performance fee**: a fixed percentage of the yield on pooled collateral, allocated to the protocol treasury. Levied on the pool, and therefore ahead of the tranche split, so it reduces `APR_base` for both tranches proportionally rather than falling on either one. Values: 5% (Ethena, Hastra PRIME), 7.5% (Neutrl, mHYPER, mM1-USD), 0% (Saturn USDat).
 
-**`reserveTVL`** — a configurable share of each interval's `gain` diverted before the junior credit, governed by `setReserveBps` under a 48-hour timelock, with `RESERVE_MANAGER_ROLE` controlling redistribution and treasury withdrawal. This is the only structurally retained buffer in the design and is the model's closest analogue to traditional **excess spread capture**: yield trapped in a third account rather than released to the equity claim. The documentation does not publish the current basis point setting, and the invariant `jrtTVL + srtTVL + reserveTVL == totalTVL` is the only place the bucket is visible. Sources: [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview), [Roles and Permissions](https://docs.strata.markets/technical-documentation/roles-and-permissions).
+**`reserveTVL`**: a configurable share of each interval's `gain` diverted before the junior credit, governed by `setReserveBps` under a 48-hour timelock, with `RESERVE_MANAGER_ROLE` controlling redistribution and treasury withdrawal. This is the only structurally retained buffer in the design and is the model's closest analogue to traditional **excess spread capture**: yield trapped in a third account rather than released to the equity claim. The documentation does not publish the current basis point setting, and the invariant `jrtTVL + srtTVL + reserveTVL == totalTVL` is the only place the bucket is visible. Sources: [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview), [Roles and Permissions](https://docs.strata.markets/technical-documentation/roles-and-permissions).
 
-**Redemption fee** — charged on exit, and per the [Mechanism Overview](https://docs.strata.markets/protocol-mechanism/mechanism-overview) "distributed to respective tranche holders with portion to treasury", with the treasury share governed by `setFeeRetentionBps` under a 48-hour timelock. Its principal function is therefore not revenue but **anti dilution**: a levy on the exiting holder that accretes to those who remain.
+**Redemption fee**: charged on exit, and per the [Mechanism Overview](https://docs.strata.markets/protocol-mechanism/mechanism-overview) "distributed to respective tranche holders with portion to treasury", with the treasury share governed by `setFeeRetentionBps` under a 48-hour timelock. Its principal function is therefore not revenue but **anti dilution**: a levy on the exiting holder that accretes to those who remain.
 
-The fee schedule is tiered on coverage, and the direction is counterintuitive on first reading — fees are highest when coverage is *strongest* and fall to zero when coverage is weakest:
+The fee schedule is tiered on coverage, and the direction is counterintuitive on first reading: fees are highest when coverage is *strongest* and fall to zero when coverage is weakest:
 
 | Market | Senior exit fee (by coverage) | Junior exit fee (by coverage) | Junior cooldown (by coverage) | Min. coverage |
 | --- | --- | --- | --- | --- |
@@ -256,9 +256,9 @@ The fee schedule is tiered on coverage, and the direction is counterintuitive on
 
 Sources: the six market pages cited in Section 2.3; the srNUSD/jrNUSD fee ranges are separately confirmed as 0–5 bps and 0–20 bps at [FAQs](https://docs.strata.markets/resources/faqs).
 
-The inversion is coherent once the two instruments are read as substitutes rather than complements. Under stress the protocol does not need a *price* on exit, because it has already imposed a *lock* — cooldowns lengthen to 14, 21, 28, or 35 days, and below the minimum coverage threshold junior redemption is suspended outright. Charging a fee on top would serve no incremental deterrent purpose while raising the round trip cost for exactly the new junior capital the protocol is trying to attract at that moment. Waiving the fee at low coverage makes recapitalisation cheap precisely when recapitalisation is what the structure requires. *This reading is an interpretation; the documentation states the schedule but not its rationale.*
+The inversion is coherent once the two instruments are read as substitutes rather than complements. Under stress the protocol does not need a *price* on exit, because it has already imposed a *lock*: cooldowns lengthen to 14, 21, 28, or 35 days, and below the minimum coverage threshold junior redemption is suspended outright. Charging a fee on top would serve no incremental deterrent purpose while raising the round trip cost for exactly the new junior capital the protocol is trying to attract at that moment. Waiving the fee at low coverage makes recapitalization cheap precisely when recapitalization is what the structure requires. *This reading is an interpretation; the documentation states the schedule but not its rationale.*
 
-The generalised primitive is stated plainly in the [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview): senior coverage may be split into **up to three ranges**, and each range may apply any combination of **SharesLock**, **AssetsLock**, and **Fee**. The market tables above are instantiations of that one mechanism.
+The generalized primitive is stated plainly in the [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview): senior coverage may be split into **up to three ranges**, and each range may apply any combination of **SharesLock**, **AssetsLock**, and **Fee**. The market tables above are instantiations of that one mechanism.
 
 ---
 
@@ -266,13 +266,13 @@ The generalised primitive is stated plainly in the [Protocol Overview](https://d
 
 Step 5 of the accounting cycle branches on whether the interval's gain covers the senior index accrual.
 
-**Case A — `gain ≥ Senior_Gain`.** The senior tranche receives its full target. The junior tranche retains the remainder. The invariant holds.
+**Case A: `gain ≥ Senior_Gain`.** The senior tranche receives its full target. The junior tranche retains the remainder. The invariant holds.
 
-**Case B — `gain < Senior_Gain`.** The shortfall is met by debiting `jrtTVL`. The senior index still advances at `APR_sr`; the junior exchange rate falls. The invariant holds.
+**Case B: `gain < Senior_Gain`.** The shortfall is met by debiting `jrtTVL`. The senior index still advances at `APR_sr`; the junior exchange rate falls. The invariant holds.
 
 Case B has no lower guard other than the junior balance itself. As the documentation states, the junior tranche "can lose the principal as well during prolonged negative performance or an underlying default event as it acts as the first loss capital", and on exhaustion "the senior tranche may also incur a loss of principal". Sources: [Risks and Mitigations](https://docs.strata.markets/protocol-mechanism/risks-and-mitigations), [FAQs](https://docs.strata.markets/resources/faqs), [Junior Tranche](https://docs.strata.markets/introduction/junior-tranche).
 
-The consequence worth stating precisely: **Case B fires on a yield shortfall, not only on a credit loss.** If the underlying earns 3.0% while the floor demands 3.75%, the junior balance is debited even though nothing has defaulted. The junior tranche is short a floor rate as well as long the credit — it has written an interest rate option to the senior tranche in addition to a first loss guarantee, and the two exposures are settled through the same debit.
+The consequence worth stating precisely: **Case B fires on a yield shortfall, not only on a credit loss.** If the underlying earns 3.0% while the floor demands 3.75%, the junior balance is debited even though nothing has defaulted. The junior tranche is short a floor rate as well as long the credit: it has written an interest rate option to the senior tranche in addition to a first loss guarantee, and the two exposures are settled through the same debit.
 
 ### 6.1 The debit is capped in code
 
@@ -288,13 +288,13 @@ capped at what the junior tranche actually holds, after which the senior claim r
 whatever the strategy earned. The reversion to base yield on junior exhaustion is
 therefore a binding term of the instrument and not only a statement in prose.
 
-First, the invariant of Section 3 is **enforced by revert**, not merely asserted in documentation. Second, and more consequentially, the senior's claim on the junior is bounded by `saturatingSub(jrtNavT1, 1e18)` — the transfer cannot drive the junior net asset value below one whole unit. The senior floor is therefore not an unconditional entitlement even before the junior tranche is legally exhausted: it is an entitlement *capped at the junior balance less one unit*, after which the senior necessarily reverts to whatever the strategy earned. The reversion to base yield on junior exhaustion is thus a coded term, not only a prose statement.
+First, the invariant of Section 3 is **enforced by revert**, not merely asserted in documentation. Second, and more consequentially, the senior's claim on the junior is bounded by `saturatingSub(jrtNavT1, 1e18)`: the transfer cannot drive the junior net asset value below one whole unit. The senior floor is therefore not an unconditional entitlement even before the junior tranche is legally exhausted: it is an entitlement *capped at the junior balance less one unit*, after which the senior necessarily reverts to whatever the strategy earned. The reversion to base yield on junior exhaustion is thus a coded term, not only a prose statement.
 
-The audit also records the inverse branch. Where `srtGainTarget < 0`, the loss is transferred to the junior tranche as profit — commented in the source as "should never happen, jic" — and the finding at 7.3.5 was that this branch credited `jrtNavT0` rather than `jrtNavT1`, so the invariant check would revert. It was fixed in commit `5332b3` and verified.
+The audit also records the inverse branch. Where `srtGainTarget < 0`, the loss is transferred to the junior tranche as profit, commented in the source as "should never happen, jic", and the finding at 7.3.5 was that this branch credited `jrtNavT0` rather than `jrtNavT1`, so the invariant check would revert. It was fixed in commit `5332b3` and verified.
 
 ### 6.2 Reconciliation against live figures
 
-Taking the published Ethena market state — `srUSDe` TVL $89.24M at 3.75% 7-day APY, `jrUSDe` TVL $13.18M at 7.59% 7-day APY ([DefiLlama](https://defillama.com/protocol/strata-markets)) — the model reproduces the reported junior yield exactly:
+Taking the published Ethena market state, `srUSDe` TVL $89.24M at 3.75% 7-day APY, `jrUSDe` TVL $13.18M at 7.59% 7-day APY ([DefiLlama](https://defillama.com/protocol/strata-markets)), the model reproduces the reported junior yield exactly:
 
 - `r = 89.24 / 102.42 = 0.87131`, so senior coverage is `1/r = ` **114.77%**, and `λ = 6.77`.
 - Implied base rate `b = s·r + j·(1−r) = 3.75(0.87131) + 7.59(0.12869) = ` **4.2442%**.
@@ -302,7 +302,7 @@ Taking the published Ethena market state — `srUSDe` TVL $89.24M at 3.75% 7-day
 
 The informative part is the senior side. The split only senior rate at this state would be `b · (1 − 0.21994) = ` **3.3107%**, whereas the reported rate is 3.75%. The `MAX` is therefore selecting the **floor**, not the split: the Ethena market is currently operating in the regime where the senior tranche is being paid its Aave benchmark guarantee rather than its proportional share.
 
-The junior tranche is funding the difference. The subsidy is `(3.75 − 3.3107) · λ = ` **2.97 percentage points** of junior APY — that is, of the 7.59% the junior tranche earns, roughly 2.97pp is being surrendered to honour the senior floor, leaving the junior with about 4.62pp attributable to the premium and residual. Under a base rate above roughly 4.8% the floor would stop binding and the split would resume governing. *All figures in this subsection are derived from the two published APYs and two published TVLs; they assume the reported APYs are net of the 5% performance fee and that the 7-day trailing window is representative.*
+The junior tranche is funding the difference. The subsidy is `(3.75 − 3.3107) · λ = ` **2.97 percentage points** of junior APY: that is, of the 7.59% the junior tranche earns, roughly 2.97pp is being surrendered to honor the senior floor, leaving the junior with about 4.62pp attributable to the premium and residual. Under a base rate above roughly 4.8% the floor would stop binding and the split would resume governing. *All figures in this subsection are derived from the two published APYs and two published TVLs; they assume the reported APYs are net of the 5% performance fee and that the 7-day trailing window is representative.*
 
 ### 6.3 Sensitivity
 
@@ -320,21 +320,21 @@ Applying Ethena parameters with a 3.75% floor across base rates and senior share
 
 Rows in which the floor binds are all those at or below 4.24%. The junior yield crosses zero at `b = floor · r`: 3.267% at the current senior share, 3.571% at the 105% breaker, 1.875% at 200% coverage.
 
-Two properties follow. First, the junior tranche's breakeven base rate *rises* as coverage falls — the thinner the junior layer, the higher the underlying yield it needs merely to avoid losing principal. Second, at the 105% circuit breaker the junior's exposure multiple is `λ ≈ 20`, so a 1pp shortfall against the floor costs the junior tranche 20pp of annualised return. The junior position is most leveraged at exactly the coverage level at which its redemption is suspended.
+Two properties follow. First, the junior tranche's breakeven base rate *rises* as coverage falls: the thinner the junior layer, the higher the underlying yield it needs merely to avoid losing principal. Second, at the 105% circuit breaker the junior's exposure multiple is `λ ≈ 20`, so a 1pp shortfall against the floor costs the junior tranche 20pp of annualized return. The junior position is most leveraged at exactly the coverage level at which its redemption is suspended.
 
 ---
 
 ## 7. Circuit breakers and the coverage state machine
 
-Coverage `1/r` is the single state variable governing protective behaviour. Three responses are documented, in escalating order.
+Coverage `1/r` is the single state variable governing protective behavior. Three responses are documented, in escalating order.
 
 1. **Fee and cooldown tiering** (Section 5), applied continuously across up to three coverage bands.
-2. **Minimum coverage threshold** — at 105% (Ethena, Hastra PRIME) or 107.5% (Saturn USDat), the protocol suspends **senior minting** and **junior redemption** simultaneously. Sources: [Risks and Mitigations](https://docs.strata.markets/protocol-mechanism/risks-and-mitigations), [srUSDe](https://docs.strata.markets/markets/ethena-usde/srusde), [jrUSDe](https://docs.strata.markets/markets/ethena-usde/jrusde).
-3. **Junior shortfall pause** — `setJrtShortfallPausePrice`, held by `PAUSER_ROLE` with no timelock, sets a junior exchange rate level at which activity halts. Together with `setMinimumJrtSrtRatio` and `setMinimumJrtSrtRatioBuffer` under `OWNER_ROLE` (48-hour timelock), these are the parameters that define where the breakers sit. Source: [Roles and Permissions](https://docs.strata.markets/technical-documentation/roles-and-permissions).
+2. **Minimum coverage threshold**: at 105% (Ethena, Hastra PRIME) or 107.5% (Saturn USDat), the protocol suspends **senior minting** and **junior redemption** simultaneously. Sources: [Risks and Mitigations](https://docs.strata.markets/protocol-mechanism/risks-and-mitigations), [srUSDe](https://docs.strata.markets/markets/ethena-usde/srusde), [jrUSDe](https://docs.strata.markets/markets/ethena-usde/jrusde).
+3. **Junior shortfall pause**: `setJrtShortfallPausePrice`, held by `PAUSER_ROLE` with no timelock, sets a junior exchange rate level at which activity halts. Together with `setMinimumJrtSrtRatio` and `setMinimumJrtSrtRatioBuffer` under `OWNER_ROLE` (48-hour timelock), these are the parameters that define where the breakers sit. Source: [Roles and Permissions](https://docs.strata.markets/technical-documentation/roles-and-permissions).
 
-The pairing at threshold 2 is the structurally significant one. Halting senior minting prevents `r` from rising further, since new senior capital would directly dilute coverage. Halting junior redemption prevents `r` from rising by the other route, since junior exits shrink the denominator. Senior redemption is never halted — which is correct as to seniority, and also means the only permitted flow at the breaker is the one that *improves* coverage. The structure corrects itself, but it does so by immobilising the junior holder.
+The pairing at threshold 2 is the structurally significant one. Halting senior minting prevents `r` from rising further, since new senior capital would directly dilute coverage. Halting junior redemption prevents `r` from rising by the other route, since junior exits shrink the denominator. Senior redemption is never halted: which is correct as to seniority, and also means the only permitted flow at the breaker is the one that *improves* coverage. The structure corrects itself, but it does so by immobilizing the junior holder.
 
-The protocol describes the equilibrium as self balancing: "thinner coverage increases junior yields, attracting more liquidity" ([FAQs](https://docs.strata.markets/resources/faqs)). Section 4.3 qualifies the mechanism — the attraction comes overwhelmingly from `λ` rather than from the premium curve, and it operates only while the base rate exceeds the floor. Below the floor the same leverage runs in reverse, and the incentive to supply junior capital inverts at precisely the point the structure most needs it. The fee waiver at low coverage (Section 5) is best read as a deliberate offset to that inversion.
+The protocol describes the equilibrium as self balancing: "thinner coverage increases junior yields, attracting more liquidity" ([FAQs](https://docs.strata.markets/resources/faqs)). Section 4.3 qualifies the mechanism: the attraction comes overwhelmingly from `λ` rather than from the premium curve, and it operates only while the base rate exceeds the floor. Below the floor the same leverage runs in reverse, and the incentive to supply junior capital inverts at precisely the point the structure most needs it. The fee waiver at low coverage (Section 5) is best read as a deliberate offset to that inversion.
 
 ---
 
@@ -356,7 +356,7 @@ multisig of two of three, behind timelocks of forty eight and twenty four hours
 respectively. The addresses are published and are omitted here because they are an
 implementation detail rather than an economic one.
 
-The material observation: `setRiskParameters` — which carries `x`, `y`, `k`, and the floor — sits behind a **24-hour** delay, while `setReserveBps` and `setFeeRetentionBps` sit behind 48 hours. The senior tranche's "guaranteed minimum yield" is thus a governance commitment revocable within a day, not a property of the contract. The rate feed itself is updatable with no delay at all. Any standard that intends the senior guarantee to be an invariant rather than a policy must locate the floor somewhere other than a mutable configuration slot, or must bound the direction and magnitude of permitted changes at the contract level.
+The material observation: `setRiskParameters`, which carries `x`, `y`, `k`, and the floor, sits behind a **24-hour** delay, while `setReserveBps` and `setFeeRetentionBps` sit behind 48 hours. The senior tranche's "guaranteed minimum yield" is thus a governance commitment revocable within a day, not a property of the contract. The rate feed itself is updatable with no delay at all. Any standard that intends the senior guarantee to be an invariant rather than a policy must locate the floor somewhere other than a mutable configuration slot, or must bound the direction and magnitude of permitted changes at the contract level.
 
 Six audits are published across Quantstamp, Cyfrin, and Guardian, with two further reports on the pre deposit vaults. Notably, "coverage aware redemption mechanism" and "discrete accounting mechanism" were scoped as separate engagements, which corroborates their treatment as the two load bearing subsystems. Source: [Audits](https://docs.strata.markets/technical-documentation/audits).
 
@@ -372,9 +372,9 @@ Assessed against the five parts described in [`common-shape.md`](../03-protocol-
 
 **Coverage tests and cure: partial, and further than Centrifuge, but still short of a cure.** Coverage gates issuance and redemption exactly as Centrifuge's minimum subordination ratio gates DROP issuance, and Strata additionally tiers exit fees and locks across coverage bands, which is a finer instrument than Centrifuge's binary gate. Strata also does something Centrifuge does not: Case B **actively diverts junior capital to satisfy the senior interest entitlement**, which is a genuine interest coverage cure rather than a passive absorption.
 
-What remains absent is the principal side cure. No mechanism redeems senior notional to restore the coverage ratio; the structure never delevers. When coverage falls, Strata freezes the numerator and the denominator and waits for the underlying to recover or for new junior capital to arrive. The traditional overcollateralisation test — divert cashflow to *retire* senior principal until the ratio is restored — is unrepresented, which is the same gap this repository's [`../01-fundamentals/README.md`](../01-fundamentals/README.md) identifies across the sector.
+What remains absent is the principal side cure. No mechanism redeems senior notional to restore the coverage ratio; the structure never delevers. When coverage falls, Strata freezes the numerator and the denominator and waits for the underlying to recover or for new junior capital to arrive. The traditional overcollateralization test, divert cashflow to *retire* senior principal until the ratio is restored, is unrepresented, which is the same gap this repository's [`../01-fundamentals/README.md`](../01-fundamentals/README.md) identifies across the sector.
 
-**Settlement: provided, but not through ERC-7540.** Tranches are ERC-4626 with LayerZero OFT transferability. Asynchronous settlement, which the structure plainly requires, is built alongside ERC-4626 as three separate lock contracts — `ERC20Cooldown` (asset lock), `UnstakeCooldown` (underlying unbonding passthrough), and `SharesCooldown` (share lock) — rather than through the request/claim lifecycle ERC-7540 defines for exactly this case. The choice is worth recording: a protocol that needed variable duration, state dependent deferred redemption declined the standard written for asynchronous vaults and built a parallel mechanism.
+**Settlement: provided, but not through ERC-7540.** Tranches are ERC-4626 with LayerZero OFT transferability. Asynchronous settlement, which the structure plainly requires, is built alongside ERC-4626 as three separate lock contracts, `ERC20Cooldown` (asset lock), `UnstakeCooldown` (underlying unbonding passthrough), and `SharesCooldown` (share lock), rather than through the request/claim lifecycle ERC-7540 defines for exactly this case. The choice is worth recording: a protocol that needed variable duration, state dependent deferred redemption declined the standard written for asynchronous vaults and built a parallel mechanism.
 
 ### Three findings carry beyond Strata
 
@@ -395,4 +395,4 @@ What remains absent is the principal side cure. No mechanism redeems senior noti
 - Market pages: [Ethena USDe](https://docs.strata.markets/markets/ethena-usde) ([srUSDe](https://docs.strata.markets/markets/ethena-usde/srusde), [jrUSDe](https://docs.strata.markets/markets/ethena-usde/jrusde)) · [Neutrl NUSD](https://docs.strata.markets/markets/neutrl-nusd) ([srNUSD](https://docs.strata.markets/markets/neutrl-nusd/srnusd), [jrNUSD](https://docs.strata.markets/markets/neutrl-nusd/jrnusd)) · [Midas mHYPER](https://docs.strata.markets/markets/midas-mhyper) · [Midas mM1-USD](https://docs.strata.markets/markets/midas-mm1-usd) · [Saturn USDat](https://docs.strata.markets/markets/saturn-usdat) · [Hastra PRIME](https://docs.strata.markets/markets/hastra-prime)
 - [FAQs](https://docs.strata.markets/resources/faqs)
 - Audit reports: [Cyfrin, protocol v1 (2025-10-08)](https://github.com/Cyfrin/cyfrin-audit-reports/blob/main/reports/2025-10-08-cyfrin-strata-tranches-v2.0.pdf) · [Cyfrin, shares cooldown (2026-01-23)](https://github.com/Cyfrin/cyfrin-audit-reports/blob/main/reports/2026-01-23-cyfrin-strata-shares-cooldown-v2.0.pdf) · [Guardian, tranches](https://github.com/GuardianAudits/Audits/blob/main/Strata/Strata_Tranches_report.pdf) · [Quantstamp, discrete accounting](https://certificate.quantstamp.com/full/strata-discrete-accounting/02318e87-e35f-4e96-81ad-192253203d55/index.html) · [Quantstamp, protocol v1](https://certificate.quantstamp.com/full/strata-tranches/3c3a4037-2a92-468c-a4f3-5ea498e7b539/index.html) · [Quantstamp, redemption fee](https://certificate.quantstamp.com/full/strata-update-to-tranches/d7a903b7-80cf-42db-8433-79186fdd8be2/index.html)
-- Third party: [DefiLlama — Strata Markets](https://defillama.com/protocol/strata-markets) · [Aleare Research — Strata: Bringing Risk-Tranching to DeFi Yields](https://alearesearch.substack.com/p/strata-risk-tranching)
+- Third party: [DefiLlama, Strata Markets](https://defillama.com/protocol/strata-markets) · [Aleare Research, Strata: Bringing Risk-Tranching to DeFi Yields](https://alearesearch.substack.com/p/strata-risk-tranching)

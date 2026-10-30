@@ -6,16 +6,16 @@
 The ERCs that tranched products are built on, what each one specifies, and which ones
 are actually used. Header fields were retrieved from `eips.ethereum.org` on 2026-06-19.
 
-- [timeline](.#the-chronology-shows-what-was-standardised-and-what-was-not) — Every relevant standard in order of creation, with a
+- [timeline](.#the-chronology-shows-what-was-standardized-and-what-was-not): Every relevant standard in order of creation, with a
   dependency ordered reading path.
-- [tranche token layer](.#the-substrate-for-representing-a-tranche-as-a-token) — Representing a tranche as a
+- [tranche token layer](.#the-substrate-for-representing-a-tranche-as-a-token): Representing a tranche as a
   token: ERC-20, ERC-1155, ERC-6909, ERC-3475.
-- [vault and yield layer](.#the-vault-and-yield-layer-beneath-a-tranche-structure) — The settlement and yield
+- [vault and yield layer](.#the-vault-and-yield-layer-beneath-a-tranche-structure): The settlement and yield
   wrapper base: ERC-4626, ERC-7540, ERC-7575, and the cash flow split tokens EIP-5115
   and EIP-5095.
-- [compliance branch](.#the-compliance-branch-governs-who-may-hold-not-how-a-structure-is-tranched) — ERC-1400 and ERC-1410, ERC-3643 and
+- [compliance branch](.#the-compliance-branch-governs-who-may-hold-not-how-a-structure-is-tranched): ERC-1400 and ERC-1410, ERC-3643 and
   ERC-7518. Who may hold a token, which is adjacent to tranching rather than part of it.
-- [adoption in practice](.#adoption-in-practice-diverges-from-what-the-standards-intended) — What each surveyed protocol
+- [adoption in practice](.#adoption-in-practice-diverges-from-what-the-standards-intended): What each surveyed protocol
   actually uses.
 
 ## The short version
@@ -45,25 +45,25 @@ tranche instead, for reasons set out in
 
 This note surveys the candidates for representing a tranche as a token, ordered from least to most expressive.
 
-## ERC-20 — [specification](https://eips.ethereum.org/EIPS/eip-20) (Final)
+## ERC-20: [specification](https://eips.ethereum.org/EIPS/eip-20) (Final)
 
 A single fungible token per tranche, with the senior and junior tokens deployed as separate contracts. ERC-20 provides no shared accounting across tranches and no concept of seniority. It is the minimal baseline, and, as the [adoption in practice](.#adoption-in-practice-diverges-from-what-the-standards-intended) shows, the representation that most surveyed protocols use in practice.
 
-## ERC-1155 — [specification](https://eips.ethereum.org/EIPS/eip-1155) (Final)
+## ERC-1155: [specification](https://eips.ethereum.org/EIPS/eip-1155) (Final)
 
 Multiple token identifiers within one contract, allowing the senior tranche to occupy identifier 0 and the junior tranche identifier 1. ERC-1155 establishes the multiple classes in one contract pattern but carries no bond or redemption semantics, and it mandates receiver callbacks and batch operations.
 
-## ERC-6909 — [specification](https://eips.ethereum.org/EIPS/eip-6909) (Final; interface identifier `0x0f632fb3`)
+## ERC-6909: [specification](https://eips.ethereum.org/EIPS/eip-6909) (Final; interface identifier `0x0f632fb3`)
 
 A minimal multi token interface that retains the `balanceOf(owner, id)` model of ERC-1155 while removing its heavier requirements:
 
 - No mandatory receiver callbacks, reducing reentrancy surface and permitting unaware counterparties.
-- Both granular per identifier allowances and a blanket operator authorisation.
+- Both granular per identifier allowances and a blanket operator authorization.
 - Batch operations omitted from the core interface.
 
 ERC-6909 is used in production by Uniswap v4. In effect it is an ERC-20 interface extended with an identifier argument.
 
-## ERC-3475 — [specification](https://eips.ethereum.org/EIPS/eip-3475) (Final; requires ERC-20, ERC-721, ERC-1155)
+## ERC-3475: [specification](https://eips.ethereum.org/EIPS/eip-3475) (Final; requires ERC-20, ERC-721, ERC-1155)
 
 The only standard designed specifically to represent tranche like instruments, by means of a class and nonce model:
 
@@ -79,7 +79,7 @@ It does not specify a seniority ordering between classes, and it does not specif
 
 ERC-3475 is the most complete representation of a tranche and also the most complex, and it has minimal production adoption. ERC-6909 is lighter and more widely adopted, at the cost of leaving the tranche semantics to the implementer. In practice most protocols use neither and deploy a plain ERC-20 per tranche; see [adoption in practice](.#adoption-in-practice-diverges-from-what-the-standards-intended).
 
-ERC-721 also appears in production for the dated or nonfungible leg of a structure — the BarnBridge senior bonds (sBONDs) and the Goldfinch junior position tokens (PoolTokens); see [`03-protocol-landscape`](../03-protocol-landscape/README.md#risk-tranching-protocols).
+ERC-721 also appears in production for the dated or nonfungible leg of a structure: the BarnBridge senior bonds (sBONDs) and the Goldfinch junior position tokens (PoolTokens); see [`03-protocol-landscape`](../03-protocol-landscape/README.md#risk-tranching-protocols).
 
 ---
 
@@ -87,29 +87,29 @@ ERC-721 also appears in production for the dated or nonfungible leg of a structu
 
 These standards specify the settlement rails and yield wrappers beneath a tranche structure. Each defines a single share class and provides no concept of seniority or splitting.
 
-## ERC-4626 — [specification](https://eips.ethereum.org/EIPS/eip-4626) (Final; requires ERC-20, ERC-2612)
+## ERC-4626: [specification](https://eips.ethereum.org/EIPS/eip-4626) (Final; requires ERC-20, ERC-2612)
 
 A tokenized vault interface comprising `deposit`, `mint`, `withdraw`, and `redeem`, together with `convertTo*`, `preview*`, and `max*` views. ERC-4626 defines a single share class and is pari passu by construction. A common senior and junior implementation deploys two ERC-4626 vaults over one strategy, as in the Idle Perpetual Yield Tranches. The `totalAssets()` and `convertToAssets()` functions are the points at which a waterfall would override the proportional net asset value split. Reference implementations: [Solmate](https://github.com/transmissions11/solmate/blob/main/src/tokens/ERC4626.sol) and OpenZeppelin.
 
-## ERC-7540 — [specification](https://eips.ethereum.org/EIPS/eip-7540) (Final; requires ERC-20, ERC-165, ERC-4626, ERC-7575)
+## ERC-7540: [specification](https://eips.ethereum.org/EIPS/eip-7540) (Final; requires ERC-20, ERC-165, ERC-4626, ERC-7575)
 
-An asynchronous extension of ERC-4626 providing `requestDeposit` and `requestRedeem` followed by later fulfilment. The request to fulfilment boundary corresponds to an epoch boundary, at which a waterfall would compute the per tranche split before fulfilling claims. ERC-7540 is used by Centrifuge, Ondo, and Backed for real world asset settlement.
+An asynchronous extension of ERC-4626 providing `requestDeposit` and `requestRedeem` followed by later fulfillment. The request to fulfillment boundary corresponds to an epoch boundary, at which a waterfall would compute the per tranche split before fulfilling claims. ERC-7540 is used by Centrifuge, Ondo, and Backed for real world asset settlement.
 
-## ERC-7575 — [specification](https://eips.ethereum.org/EIPS/eip-7575) (Final; vault interface `0x2f0a18c5`, share interface `0xf815c03d`)
+## ERC-7575: [specification](https://eips.ethereum.org/EIPS/eip-7575) (Final; vault interface `0x2f0a18c5`, share interface `0xf815c03d`)
 
-Externalises the share token from the vault through a `share()` accessor, allowing multiple asset entry points to share one token (with optional "Pipes" for conversion). This is the inverse of a tranche structure: it maps many assets to one share, whereas a tranche maps one asset to many share classes. It confirms that the vault standards do not address seniority. Note the [timeline](.#the-chronology-shows-what-was-standardised-and-what-was-not): ERC-7540 requires ERC-7575 although ERC-7540 is the earlier document.
+Externalizes the share token from the vault through a `share()` accessor, allowing multiple asset entry points to share one token (with optional "Pipes" for conversion). This is the inverse of a tranche structure: it maps many assets to one share, whereas a tranche maps one asset to many share classes. It confirms that the vault standards do not address seniority. Note the [timeline](.#the-chronology-shows-what-was-standardized-and-what-was-not): ERC-7540 requires ERC-7575 although ERC-7540 is the earlier document.
 
 ## Cash flow split tokens
 
 The following standards represent the output of a yield split (principal versus yield) rather than a risk tranche.
 
-### EIP-5115 — SY / Standardized Yield — [specification](https://eips.ethereum.org/EIPS/eip-5115) (Draft; requires ERC-20)
+### EIP-5115 (SY / Standardized Yield): [specification](https://eips.ethereum.org/EIPS/eip-5115) (Draft; requires ERC-20)
 
-A yield wrapper interface more general than ERC-4626, authored by the Pendle team. It relaxes three ERC-4626 assumptions: it permits multiple input and output tokens (`getTokensIn`, `getTokensOut`), it permits accounting in units that are not themselves depositable (for example AMM liquidity units), and it provides for reward token handling. Its model is a generic yield generating pool with `exchangeRate() = totalAssets / totalShares`. Pendle wraps an arbitrary yield source as SY and then splits it into principal and yield tokens. The architectural consequence is that a uniform yield source adapter beneath the engine allows the engine to reason about a single normalised net asset value irrespective of source.
+A yield wrapper interface more general than ERC-4626, authored by the Pendle team. It relaxes three ERC-4626 assumptions: it permits multiple input and output tokens (`getTokensIn`, `getTokensOut`), it permits accounting in units that are not themselves depositable (for example AMM liquidity units), and it provides for reward token handling. Its model is a generic yield generating pool with `exchangeRate() = totalAssets / totalShares`. Pendle wraps an arbitrary yield source as SY and then splits it into principal and yield tokens. The architectural consequence is that a uniform yield source adapter beneath the engine allows the engine to reason about a single normalized net asset value irrespective of source.
 
-### EIP-5095 — Principal Token — [specification](https://eips.ethereum.org/EIPS/eip-5095) (Stagnant; requires ERC-20, ERC-2612)
+### EIP-5095 (Principal Token): [specification](https://eips.ethereum.org/EIPS/eip-5095) (Stagnant; requires ERC-20, ERC-2612)
 
-Specifies the principal token leg only — ownership of an underlying ERC-20 at a future `maturity()`, redeemable at that maturity — using an ERC-4626-shaped redemption interface. It does not specify the yield token or the act of splitting. The proposal is Stagnant, and Pendle's principal tokens implement ERC-4626 rather than EIP-5095 ([discussion](https://ethereum-magicians.org/t/eip-5095-principal-token-standard/9259)).
+Specifies the principal token leg only, ownership of an underlying ERC-20 at a future `maturity()`, redeemable at that maturity, using an ERC-4626-shaped redemption interface. It does not specify the yield token or the act of splitting. The proposal is Stagnant, and Pendle's principal tokens implement ERC-4626 rather than EIP-5095 ([discussion](https://ethereum-magicians.org/t/eip-5095-principal-token-standard/9259)).
 
 ## The pattern across both layers
 
@@ -119,29 +119,29 @@ The same thing happened on both kinds of split. The token legs received standard
 
 # The compliance branch governs who may hold, not how a structure is tranched
 
-These standards govern eligibility to hold a token — identity, investor qualification, and transfer restrictions. They are adjacent to tranching rather than part of it: they compose alongside a waterfall but do not specify one. They are relevant only where the target is a regulated or real world asset structure.
+These standards govern eligibility to hold a token: identity, investor qualification, and transfer restrictions. They are adjacent to tranching rather than part of it: they compose alongside a waterfall but do not specify one. They are relevant only where the target is a regulated or real world asset structure.
 
-## ERC-1400 and ERC-1410 — unofficial
+## ERC-1400 and ERC-1410: unofficial
 
-These are not official EIPs. They were opened as GitHub issues by Adam Dossa of Polymath in September 2018: [issue #1411 (ERC-1400)](https://github.com/ethereum/EIPs/issues/1411) and [issue #1410 (ERC-1410)](https://github.com/ethereum/EIPs/issues/1410). Both are closed and labelled stale. The canonical specification is maintained in a community repository rather than in the Ethereum Foundation repository: [`SecurityTokenStandard/EIP-Spec`](https://github.com/SecurityTokenStandard/EIP-Spec).
+These are not official EIPs. They were opened as GitHub issues by Adam Dossa of Polymath in September 2018: [issue #1411 (ERC-1400)](https://github.com/ethereum/EIPs/issues/1411) and [issue #1410 (ERC-1410)](https://github.com/ethereum/EIPs/issues/1410). Both are closed and labeled stale. The canonical specification is maintained in a community repository rather than in the Ethereum Foundation repository: [`SecurityTokenStandard/EIP-Spec`](https://github.com/SecurityTokenStandard/EIP-Spec).
 
 ERC-1400 is an umbrella over five component standards: ERC-1594 (core transfer), ERC-1410 (partitions), ERC-1643 (document management), and ERC-1644 (controller operations). The tranche relevant element is ERC-1410's partition model: balances are divided into `bytes32` partitions, and `canTransferByPartition` returns a status reason code. This corresponds to a tranche as partition representation.
 
-## ERC-3643 — T-REX — [specification](https://eips.ethereum.org/EIPS/eip-3643) (Final, 2021-07-09; requires ERC-20, ERC-173)
+## ERC-3643 (T-REX): [specification](https://eips.ethereum.org/EIPS/eip-3643) (Final, 2021-07-09; requires ERC-20, ERC-173)
 
-The finalised and most widely adopted member of this branch. It specifies permissioned, compliant transfer with on chain identity (ONCHAINID) for investor eligibility. The specification does not address tranching, seniority, or waterfall logic; it governs which parties may hold tranche tokens, not how a structure is tranched.
+The finalized and most widely adopted member of this branch. It specifies permissioned, compliant transfer with on chain identity (ONCHAINID) for investor eligibility. The specification does not address tranching, seniority, or waterfall logic; it governs which parties may hold tranche tokens, not how a structure is tranched.
 
-## ERC-7518 — DyCIST — [specification](https://eips.ethereum.org/EIPS/eip-7518) (Review, 2023-09-14; requires ERC-165, ERC-1155)
+## ERC-7518 (DyCIST): [specification](https://eips.ethereum.org/EIPS/eip-7518) (Review, 2023-09-14; requires ERC-165, ERC-1155)
 
 A more recent successor to the ERC-1400/1410 line, built over ERC-1155 partitions with off chain compliance vouchers, token locking, and forced transfers.
 
 ## Summary
 
-The ERC-1410 partition model is useful as prior art rather than as a citable standard. Of the finalised options, ERC-3643 is the one in use, and ERC-7518 is the proposal to track. None of them says anything about payment priority or loss ordering; they govern who may hold a tranche token, not how the structure is tranched.
+The ERC-1410 partition model is useful as prior art rather than as a citable standard. Of the finalized options, ERC-3643 is the one in use, and ERC-7518 is the proposal to track. None of them says anything about payment priority or loss ordering; they govern who may hold a tranche token, not how the structure is tranched.
 
 ---
 
-# The chronology shows what was standardised and what was not
+# The chronology shows what was standardized and what was not
 
 The standards relevant to tranching, ordered by creation date. Header fields verified on 2026-06-19; current status is shown in the final column.
 
@@ -160,7 +160,7 @@ The standards relevant to tranching, ordered by creation date. Header fields ver
 | 2023-06-20 | [ERC-7201](https://eips.ethereum.org/EIPS/eip-7201) | Namespaced Storage Layout | Final | Upgrade safe storage substrate |
 | 2023-09-14 | [ERC-7518](https://eips.ethereum.org/EIPS/eip-7518) | DyCIST | Review | Security token over ERC-1155 partitions |
 | 2023-10-18 | [ERC-7540](https://eips.ethereum.org/EIPS/eip-7540) | Asynchronous Vaults | Final | Epoch and request based settlement |
-| 2023-12-11 | [ERC-7575](https://eips.ethereum.org/EIPS/eip-7575) | Multi Asset Vaults | Final | Externalised share token |
+| 2023-12-11 | [ERC-7575](https://eips.ethereum.org/EIPS/eip-7575) | Multi Asset Vaults | Final | Externalized share token |
 
 ## Two observations from the chronology
 

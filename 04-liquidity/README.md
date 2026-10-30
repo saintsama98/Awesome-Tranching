@@ -31,7 +31,7 @@ Centrifuge refuses outright, rejecting any epoch allocation that would leave the
 subordination band. Strata tiers the friction across up to three coverage bands, each
 applying some combination of a share lock, an asset lock and a fee. Royco pauses the
 market entirely for a fixed term after a loss, on the reasoning that a drawdown which
-reverses inside the window was never a loss worth realising, and separately pays a third
+reverses inside the window was never a loss worth realizing, and separately pays a third
 party to stand ready to buy the senior leg so that exiting need not touch the pool at
 all. Re does not gate anything and instead accepts a quarterly redemption window on its
 mezzanine leg, because the underlying reinsurance treaty simply cannot return capital
@@ -70,7 +70,7 @@ in flight.
 
 The decision at the boundary is harder than it looks. When every order cannot be filled,
 something has to choose who is filled and by how much, subject to the constraints of the
-pool. That is a constrained optimisation, and it is expensive to solve on chain.
+pool. That is a constrained optimization, and it is expensive to solve on chain.
 
 Centrifuge Tinlake inverts it: anyone may compute a candidate allocation off chain and
 submit it, and the contract only checks it against the constraints and ranks it. A
@@ -84,7 +84,7 @@ That is a reasonable answer and it is not the only one.
 
 ## Asynchronous settlement as a standard
 
-The request and later fulfilment pattern is common enough that ERC-7540 standardises it,
+The request and later fulfillment pattern is common enough that ERC-7540 standardizes it,
 as an asynchronous extension of ERC-4626. A holder requests a deposit or a redemption
 and claims it once the pool has fulfilled it.
 
@@ -99,7 +99,7 @@ plain ERC-4626 rather than adopting the standard written for the case. See
 Centrifuge is the clearest case of the trade. Tinlake computes the coverage arithmetic
 on chain and settles in epochs driven by the on chain solver. Liquidity Pools v3
 reissues the tranches as ERC-7540 vaults across chains and moves the coverage and
-pricing arithmetic off chain. The settlement interface got cleaner and standardised, and
+pricing arithmetic off chain. The settlement interface got cleaner and standardized, and
 the part that was independently checkable stopped being so. See
 [`07-study-centrifuge`](../07-study-centrifuge/README.md).
 
@@ -147,12 +147,12 @@ really about liquidity at all.
 
 A market normally runs perpetual, with both legs liquid. After a loss it can enter a
 fixed term state that restricts withdrawals for a set period. The reasoning is that a
-drawdown which reverses inside the window was never a loss, so realising it would harm
+drawdown which reverses inside the window was never a loss, so realizing it would harm
 holders for nothing. Only a loss that persists past the window reaches junior capital.
 
 That is a trade of liquidity for the avoidance of forced marking, and it is closer to how
-a traditional fund handles a bad quarter than to normal DeFi behaviour. It is also
-squarely a judgement call: the length of the window decides which movements count as
+a traditional fund handles a bad quarter than to normal DeFi behavior. It is also
+squarely a judgment call: the length of the window decides which movements count as
 real, and it is set per market. One outside review records a two day window on one
 underlying market and none at all on another, where losses are absorbed on the spot. See
 [`10-study-royco`](../10-study-royco/README.md#mechanics).
@@ -239,7 +239,7 @@ premium behave very differently as the composition of a pool moves, and a junior
 should know which one is paying them.
 
 The fourth sidesteps the question. Re does not sell its first loss layer at all: the
-equity of the reinsurer absorbs first, and both tokenised legs sit above it. That removes
+equity of the reinsurer absorbs first, and both tokenized legs sit above it. That removes
 the demand problem for the layer that matters most and replaces it with a different one,
 since the adequacy of that equity is now something a depositor takes on trust from an off
 chain balance sheet rather than reads from a contract. See
@@ -247,7 +247,7 @@ chain balance sheet rather than reads from a contract. See
 
 ## How thin it is in practice
 
-The traditional benchmark is instructive. Equity in a collateralised loan obligation is
+The traditional benchmark is instructive. Equity in a collateralized loan obligation is
 roughly 8 to 10% of the structure. On chain, the cover position in a Maple pool is on
 the order of 0 to 3% and often unused. Royco sits between the two, with coverage floors
 of roughly 3 to 20% depending on the market; an outside review of one live senior vault
@@ -271,7 +271,7 @@ senior side would accept, and the structure has no meaning without it.
 
 The recent entrants approach the problem from the other end, by bringing institutional
 credit on chain where a first loss investor base already exists. See
-[`03-protocol-landscape`](../03-protocol-landscape/README.md#real-world-asset-securitisation-entrants).
+[`03-protocol-landscape`](../03-protocol-landscape/README.md#real-world-asset-securitization-entrants).
 
 ## A distinction worth keeping
 
@@ -294,7 +294,7 @@ used for tranches in practice.
 
 What protocols do instead is deploy one ordinary ERC-20 per tranche, with no shared
 accounting between them. The reason is liquidity. A plain ERC-20 can be listed on a
-decentralised exchange, supplied to a lending market, and used as collateral, without
+decentralized exchange, supplied to a lending market, and used as collateral, without
 anything on the other side knowing what a tranche is. A multi token identifier or a
 class and nonce pair cannot, without integration work by every venue.
 

@@ -83,7 +83,7 @@ The mechanic that distinguishes a managed structure from a passive one is the co
 test: a ratio measured each period against a stated trigger, whose breach changes where
 cash goes. Two families of test are standard.
 
-The overcollateralisation test asks whether enough collateral principal stands behind a
+The overcollateralization test asks whether enough collateral principal stands behind a
 claim. It is computed as the par value of the collateral pool divided by the par value of
 the liabilities senior to and including the tranche being tested. A hundred million pool
 against an eighty million senior claim gives a ratio of 1.25, which passes a trigger of
@@ -125,7 +125,7 @@ senior token and a junior token, and then omit the coverage tests entirely. Thei
 layer absorbs loss passively, by its net asset value falling, and no cash is ever
 redirected in response to a measured ratio.
 
-| Behaviour | Present on chain |
+| Behavior | Present on chain |
 |---|---|
 | Passive loss absorption, junior value declines | Yes, essentially universal |
 | Suspension of new senior issuance on breach | Centrifuge, Strata |
@@ -142,11 +142,11 @@ deteriorating or of postponing the moment it is measured. Nothing on chain repai
 ratio that has already broken. The evidence protocol by protocol is in
 [`../03-protocol-landscape/`](../03-protocol-landscape/README.md).
 
-## The collateralised loan obligation is the reference implementation
+## The collateralized loan obligation is the reference implementation
 
-The collateralised loan obligation is the canonical at scale version of the mechanic
+The collateralized loan obligation is the canonical at scale version of the mechanic
 above, and it is the structure against which the on chain designs are best measured. It
-is a managed securitisation of below investment grade corporate loans arranged into a
+is a managed securitization of below investment grade corporate loans arranged into a
 rated capital stack, and the figures below are indicative ranges from educational and
 manager sources rather than any single indenture.
 
@@ -159,14 +159,14 @@ manager sources rather than any single indenture.
 Three features of the reference structure are absent from every on chain implementation
 in this repository, and each is worth stating separately.
 
-The first is that coverage is a ladder rather than a single test. A collateralised loan
-obligation computes an overcollateralisation and an interest coverage ratio at every
+The first is that coverage is a ladder rather than a single test. A collateralized loan
+obligation computes an overcollateralization and an interest coverage ratio at every
 rated level of the stack, each with its own trigger, so a deterioration that is
 immaterial to the AAA claim can still divert cash away from the BB claim. Indicative
 triggers run from roughly 127 to 132 percent at AAA down to roughly 103 to 107 percent at
 BB. A structure with one test at one boundary is a considerably simpler instrument.
 
-| Tranche | Overcollateralisation trigger | Interest coverage trigger |
+| Tranche | Overcollateralization trigger | Interest coverage trigger |
 |---|---|---|
 | AAA | 127 to 132 percent | About 120 to 130 percent |
 | AA | 118 to 122 percent | Not separately stated |
@@ -183,7 +183,7 @@ that permits only paydown has one of the two, and a structure that permits neith
 neither.
 
 The third is thickness of first loss capital, and it is the sharpest contrast in this
-repository. Equity in a collateralised loan obligation is roughly eight to ten percent of
+repository. Equity in a collateralized loan obligation is roughly eight to ten percent of
 the structure. The cover position in a Maple pool is on the order of zero to three
 percent and frequently unused. Royco publishes coverage floors of roughly three to twenty
 percent depending on the market, and an independent review of one live vault measured
@@ -192,13 +192,13 @@ outlier in the other direction, carrying a first loss layer funded by the operat
 than sold to depositors.
 
 Worked figures, drawn from the same sources: a five hundred million pool against a three
-hundred million AAA tranche gives an overcollateralisation ratio of 167 percent against a
+hundred million AAA tranche gives an overcollateralization ratio of 167 percent against a
 130 percent trigger, a comfortable pass. On the income side, a pool earning SOFR plus 450
 basis points against a AAA tranche paying SOFR plus 135 produces roughly 47.5 million of
 income against 19.05 million of expense, an interest coverage ratio near 249 percent
 against a 125 percent trigger.
 
-## The arithmetic is exact and the thresholds are judgements
+## The arithmetic is exact and the thresholds are judgments
 
 A waterfall has two layers that behave very differently, and treating them as one is the
 most consequential category error available in this subject.
@@ -210,9 +210,9 @@ reproducible, and anyone can verify after the fact that a distribution followed 
 stated rules.
 
 The second layer is calibration, and every number feeding the first layer belongs to it.
-The overcollateralisation trigger, the interest coverage trigger, the attachment and
+The overcollateralization trigger, the interest coverage trigger, the attachment and
 detachment points that set the division between senior and junior, and the assumed
-correlation of defaults across the pool are all modelling judgements rather than
+correlation of defaults across the pool are all modeling judgments rather than
 determinable constants. They are conditional estimates: the senior layer is protected
 only while losses remain inside the junior cushion and defaults do not correlate more
 strongly than assumed.
@@ -242,7 +242,7 @@ tranche absorbs.
 Above one hundred percent the book lost money on underwriting.
 
 **Coverage ratio.** A measure of how well a claim is covered, by assets in the
-overcollateralisation test and by income in the interest coverage test.
+overcollateralization test and by income in the interest coverage test.
 
 **Cure.** Restoring a breached coverage ratio above its trigger, either by retiring senior
 principal or by rebuilding the collateral.
@@ -284,5 +284,5 @@ Coverage test formulas, indicative triggers, the worked example and the breach m
 [collateralizedloanobligations.com](https://collateralizedloanobligations.com/mechanics/coverage-tests).
 Capital structure, the reinvestment period, the parallel waterfalls and the role of the
 manager: [Guggenheim, Understanding Collateralized Loan Obligations](https://www.guggenheiminvestments.com/perspectives/portfolio-strategy/understanding-collateralized-loan-obligations-clo/).
-On chain coverage behaviour, protocol by protocol, with citations:
+On chain coverage behavior, protocol by protocol, with citations:
 [`../03-protocol-landscape/`](../03-protocol-landscape/README.md).

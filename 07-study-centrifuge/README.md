@@ -1,7 +1,7 @@
 # Centrifuge
 
 > Study of a live system. Centrifuge V3 is deployed across eight networks and its
-> flagship product is the largest tokenised AAA collateralised loan obligation fund in
+> flagship product is the largest tokenized AAA collateralized loan obligation fund in
 > existence. This document covers what is running now.
 
 ## Centrifuge is the only protocol here whose product is an actual CLO tranche
@@ -9,21 +9,21 @@
 Every other protocol in this repository constructs a tranche out of a DeFi yield source.
 Centrifuge does something categorically different with its flagship product: it brings on
 chain a claim on tranches that already exist in traditional credit markets. JAAA, the
-Janus Henderson Anemoy AAA CLO Fund, is a tokenised feeder into the flagship AAA
-collateralised loan obligation strategy of a manager that runs the largest AAA CLO
+Janus Henderson Anemoy AAA CLO Fund, is a tokenized feeder into the flagship AAA
+collateralized loan obligation strategy of a manager that runs the largest AAA CLO
 exchange traded fund in traditional markets. The underlying is a portfolio of the senior
-most tranches of real collateralised loan obligations, carrying floating coupons that
+most tranches of real collateralized loan obligations, carrying floating coupons that
 reset off SOFR.
 
 The significance for this repository is that it closes a loop the rest of the sector
 leaves open. [`../01-fundamentals/`](../01-fundamentals/README.md) describes the
-collateralised loan obligation as the reference implementation of a complete waterfall,
+collateralized loan obligation as the reference implementation of a complete waterfall,
 with a coverage ladder at every rated level and two distinct cure paths, and observes
 that no on chain protocol implements it. Centrifuge does not implement it either. It
 buys it. The waterfall runs in the traditional structure where it has always run, and the
 token represents the resulting claim.
 
-That is worth stating plainly rather than treating as a disappointment. A tokenised
+That is worth stating plainly rather than treating as a disappointment. A tokenized
 senior CLO tranche gives a holder exactly the exposure the coverage ladder produces,
 including the diversion of cash away from junior claims during a breach, without any of
 that mechanism needing to exist in Solidity. Whether the sector should be building the
@@ -34,9 +34,9 @@ largest single piece of evidence for the second answer.
 
 JAAA came on chain in June 2025 and reached roughly 687 to 690 million dollars of assets
 under management across eight networks. It is described by Centrifuge as the largest
-tokenised AAA CLO fund, and it was seeded by a one billion dollar allocation from Grove.
-The underlying portfolio has been reported as holding 36 collateralised loan obligations
-with no defaults. In June 2026 it became the first tokenised AAA CLO fund available
+tokenized AAA CLO fund, and it was seeded by a one billion dollar allocation from Grove.
+The underlying portfolio has been reported as holding 36 collateralized loan obligations
+with no defaults. In June 2026 it became the first tokenized AAA CLO fund available
 through Kraken Custody, which matters less for the mechanics than for what it says about
 the intended holder.
 
@@ -94,7 +94,7 @@ The deRWA wrappers are the second mechanism worth studying, and they attack the 
 described in [`../04-liquidity/`](../04-liquidity/README.md) from a direction none of the
 native protocols use. Compliance is enforced upstream at the pool level, and the wrapper
 makes the resulting token transferable and composable, so that yield bearing real world
-asset tokens can trade on decentralised exchanges including Aerodrome, Balancer and
+asset tokens can trade on decentralized exchanges including Aerodrome, Balancer and
 Curve.
 
 The design insight is that permissioning and liquidity are separable concerns that the
@@ -116,7 +116,7 @@ withdrawing capital, which preserves the subordination structure for everyone wh
 The honest summary is that Centrifuge has become the most commercially successful entity
 in on chain structured credit by moving away from the thing this repository studies. The
 subordination logic that made its earlier work interesting is not where the assets are.
-The assets are in a tokenised feeder into a traditional fund, distributed across eight
+The assets are in a tokenized feeder into a traditional fund, distributed across eight
 chains, wrapped for composability, and custodied by a regulated crypto custodian.
 
 That trajectory is itself a finding, and it recurs. Pareto, covered in
