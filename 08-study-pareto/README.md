@@ -13,7 +13,7 @@ a private credit marketplace, and the same senior and junior machinery underwrit
 to institutional borrowers instead of splitting the yield of a farming strategy.
 
 The move is the most instructive thing about the protocol and it echoes across the sector.
-Centrifuge went from a subordination engine to distributing a tokenised traditional fund.
+Centrifuge went from a subordination engine to distributing a tokenized traditional fund.
 Re started from an insurance balance sheet and built inward. Pareto took a working
 tranching engine and repointed it at borrowers who wanted underwritten credit. In each
 case the direction is from mechanism toward an asset class with an existing institutional
@@ -27,14 +27,14 @@ synthetic dollar.
 
 ## The senior and junior split is priced by relative size rather than fixed
 
-The engine divides interest between two token classes, historically labelled AA for the
+The engine divides interest between two token classes, historically labeled AA for the
 senior claim and BB for the junior claim. The division is governed by a ratio recomputed
 from the total value of both tranches at every deposit and redemption, so the split moves
 continuously with the composition of the pool rather than sitting at a number somebody
 chose at launch.
 
 The reasoning behind that design is the strongest argument in the sector for adaptive
-pricing, and it is worth restating because it generalises well beyond this protocol. Under
+pricing, and it is worth restating because it generalizes well beyond this protocol. Under
 a fixed split the junior claim receives the same share of income whether its cushion is
 large or small. That is wrong in both directions. When junior capital is scarce, the
 senior claim is surrendering yield for protection that is not actually present. When
@@ -56,7 +56,7 @@ merely available.
 | Thick junior cushion | Reduced, floored at roughly 50 percent | Senior yield falls toward its floor and junior captures up to half |
 
 The illustration published alongside the mechanism gives a senior position of 2.5 million
-dollars at a ten percent underlying yield realising roughly seven percent when fully
+dollars at a ten percent underlying yield realizing roughly seven percent when fully
 covered by an equal junior balance, and up to roughly twelve percent when the senior claim
 predominates. The floor and cap on the split ratio are properties of the implementation
 rather than of a published closed form expression.
@@ -76,7 +76,7 @@ subordination continuously and implements none of the coverage test machinery. P
 against Strata, which reaches a similar looking result from the opposite direction by
 pricing the senior rate and treating the junior claim as the residual, the two are worth
 studying as a pair: same intent, mirrored construction, and materially different
-behaviour at the extremes.
+behavior at the extremes.
 
 ## The credit vaults are where the tranching now happens
 
@@ -88,7 +88,7 @@ which is the ordinary arrangement applied to an unusual asset.
 
 The FalconX credit vault is the clearest live example. It offers fixed rate loans
 originated by FalconX to trading firms, hedge funds and other institutional clients, each
-collateralised and monitored by an on chain risk engine, and it includes equity tranches
+collateralized and monitored by an on chain risk engine, and it includes equity tranches
 that absorb first loss. As of 23 June 2026 it had grown to a record 144 million dollars
 and delivered a thirty day gross yield of 8.25 percent before a ten percent performance
 fee.

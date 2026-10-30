@@ -67,6 +67,6 @@ comes from an independent party and is a claim about what somebody found. Someth
 described as derived is arithmetic performed here on published figures, and where that
 happens the derivation is shown so it can be checked.
 
-Judgements are stated as judgements. Where this repository concludes that a mechanism is
+Judgments are stated as judgments. Where this repository concludes that a mechanism is
 weaker than its documentation suggests, or that two protocols are not comparable, the
 reasoning is given and a reader is expected to be able to disagree with it.

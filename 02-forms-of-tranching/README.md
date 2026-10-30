@@ -16,7 +16,7 @@ protected because another leg has agreed to be impaired ahead of it. Cash flow t
 divides by which component of the return a holder owns. The legs are principal and yield,
 and the protected leg is protected because it is defined to redeem at par at a stated
 maturity while the other leg absorbs everything variable. Sequential tranching divides by
-strict payment order across three or more layers, and is the arrangement a collateralised
+strict payment order across three or more layers, and is the arrangement a collateralized
 loan obligation uses.
 
 | | Risk tranching | Cash flow tranching |
@@ -77,7 +77,7 @@ describes itself as tranched is therefore not necessarily providing subordinatio
 question to ask is what happens if the source does not merely underperform but breaks.
 
 The construction technique is nonetheless the more transferable of the two. Wrapping an
-arbitrary yield source into a standardised form before splitting anything means the split
+arbitrary yield source into a standardized form before splitting anything means the split
 engine reasons about a single number, an exchange rate, whatever the source happens to be.
 One engine then works over staking derivatives, lending receipts and liquidity positions
 alike. The internal index is designed not to decrease, so volatility in the source is
@@ -103,7 +103,7 @@ space rather than a variation on the existing one. It is discussed in
 
 Re inverts a different assumption. Its stack has three ordered layers, but the layer that
 absorbs first is the equity of the reinsurer itself, and depositors cannot buy it. The two
-tokenised legs, mezzanine and senior, both sit above a cushion the operator funds.
+tokenized legs, mezzanine and senior, both sit above a cushion the operator funds.
 
 That arrangement dissolves the junior demand problem described in
 [`../04-liquidity/`](../04-liquidity/README.md), which was the binding constraint on
@@ -116,15 +116,15 @@ said to stand behind the structure is really there and really available.
 
 ## Sequential tranching exists in theory and barely on chain
 
-Traditional securitisation runs three or more layers paid strictly in order, with a
+Traditional securitization runs three or more layers paid strictly in order, with a
 coverage test at every boundary. On chain this is almost entirely absent. Essentially
 every live structure has exactly one subordination boundary. Waterfall DeFi attempted a
 three tranche sequential waterfall and is defunct. Centrifuge documents support for
 mezzanine layers, which is a capability rather than a demonstrated deployment.
 
 The exception is instructive and belongs in this document rather than elsewhere. Centrifuge
-is running the largest tokenised claim on a genuine multi layer waterfall, and it does so
-by tokenising a feeder into a fund that holds the senior tranches of real collateralised
+is running the largest tokenized claim on a genuine multi layer waterfall, and it does so
+by tokenizing a feeder into a fund that holds the senior tranches of real collateralized
 loan obligations. The full coverage ladder exists, the diversion mechanics exist, and none
 of it is on chain. The claim is. That is covered in
 [`../07-study-centrifuge/`](../07-study-centrifuge/README.md).

@@ -31,7 +31,7 @@ Three things make it worth the reading time, in descending order of how transfer
 are. The third leg is a real idea and is portable to any tranched structure. The
 observation period, in which a market pauses withdrawals for a fixed term after a loss on
 the reasoning that a drawdown reversing inside the window was never a loss worth
-realising, is a second idea of the same quality and is discussed in
+realizing, is a second idea of the same quality and is discussed in
 [`04-liquidity`](../04-liquidity/README.md#every-protocol-restricts-exit-and-the-instruments-differ).
 And it is by a distance the most heavily reviewed protocol covered here, with seventeen
 audits across the products including formal verification by Certora and a competitive
@@ -49,7 +49,7 @@ waterfall is applied to.
 On scale, the figures below are what the sources say at the dates they give, and should be
 treated as an indication rather than as current. Total value locked was about 10 million
 dollars across six live markets with over 155,000 users; the USDC market showed a senior
-yield near 8.3 percent against a junior yield above 40 percent at 96 percent utilisation;
+yield near 8.3 percent against a junior yield above 40 percent at 96 percent utilization;
 and the protocol front page carries an all time volume figure of 3.1 billion dollars. That
 last number is worth reading carefully rather than glossing over, because most of it
 belongs to the Incentivized Action Marketplace moving large sums through short lived
@@ -103,7 +103,7 @@ capital in front of it. ST is not impaired until this JT capital is fully exhaus
 
 The coverage floor varies by market. One curator writing about the protocol gives a
 range of roughly 3 to 20 percent across markets, which is worth holding next to the 8 to
-10 percent equity layer of a collateralised loan obligation in
+10 percent equity layer of a collateralized loan obligation in
 [`01-fundamentals`](../01-fundamentals/README.md).
 Source: [Dialectic, Risk as a Product](https://dialecticgroup.substack.com/p/risk-as-a-product),
 July 2026.
@@ -113,10 +113,10 @@ July 2026.
 The Dawn repository names three yield distribution models, which decide how much of the
 senior yield flows to the junior leg.
 
-| Model | Behaviour |
+| Model | Behavior |
 |---|---|
 | Static curve | A fixed piecewise curve |
-| Adaptive V1 | The curve scales with how far utilisation has moved from its target |
+| Adaptive V1 | The curve scales with how far utilization has moved from its target |
 | Adaptive V2 | The curve moves vertically, at a configurable speed of adaptation |
 
 The intent, as described from outside, is to keep a slight surplus of junior capital: as
@@ -138,10 +138,10 @@ liquid. After a loss the market can move to a fixed term state, which restricts
 withdrawals for a set period.
 
 The reasoning is that a drawdown which reverses inside the window was never a loss, so
-realising it would harm holders for no reason. Only a loss that persists past the window
+realizing it would harm holders for no reason. Only a loss that persists past the window
 is applied to junior capital. It is a deliberate trade of liquidity for the avoidance of
 forced marking, and it is closer to the discipline of a traditional fund than to normal
-DeFi behaviour.
+DeFi behavior.
 
 The length is set per market. An outside review of one Royco vault records a two day
 fixed term state on one underlying market and none at all on another, where losses are
@@ -197,7 +197,7 @@ distribution model the market uses.
 Coverage tests and cure are partial. There is a minimum coverage level and a loss state
 that restricts withdrawals, and there is no diversion of cash flow to repair a breached
 ratio, so like every other protocol in this repository the structure does not delever.
-What the observation period contributes is a delay before a loss is recognised at all,
+What the observation period contributes is a delay before a loss is recognized at all,
 which is a different thing from a cure and, for a volatile underlying, arguably a more
 honest one.
 

@@ -5,11 +5,11 @@
 > to depositors.
 
 Re is a reinsurance protocol. Stablecoin capital is deposited on chain, allocated into
-fully collateralised quota share reinsurance contracts written by a licensed reinsurer,
+fully collateralized quota share reinsurance contracts written by a licensed reinsurer,
 and the premiums earned on those contracts are paid back to depositors as yield. It is
 included in this repository because the capital structure sitting behind that
 arrangement is a genuine three layer waterfall, which makes it the only protocol covered
-here whose stack matches the shape traditional securitisation actually uses rather than
+here whose stack matches the shape traditional securitization actually uses rather than
 the two layer simplification the rest of the sector has settled on.
 
 The distinction that matters when reading Re is that its first loss layer is not on
@@ -41,7 +41,7 @@ current as of the date they were read rather than continuously.
 The reason a repository about tranching should care about an insurance protocol is that
 insurance is where tranching came from. A quota share treaty is a proportional sharing
 of premium and loss between a cedent and a reinsurer, which is the same primitive a
-waterfall generalises. Re is the case in this collection where the risk being tranched
+waterfall generalizes. Re is the case in this collection where the risk being tranched
 is not a credit spread or a staking yield but an underwriting result, and the loss it
 protects against is a catastrophe rather than a default. The arithmetic is the same and
 the correlation structure is completely different, which is worth sitting with.
@@ -77,7 +77,7 @@ an off chain balance sheet rather than something they can read from a contract.
 ## Where the yield comes from
 
 Capital is deposited into what the protocol calls Insurance Capital Layers, which
-allocate it to fully collateralised quota share reinsurance agreements backed by a
+allocate it to fully collateralized quota share reinsurance agreements backed by a
 licensed reinsurer. Cover Re SPC Ltd, a Cayman Islands entity, is described as the sole
 reinsurance partner. A quota share treaty is a proportional arrangement: the reinsurer
 takes an agreed share of the premiums a cedent writes and pays the same share of the
@@ -104,7 +104,7 @@ blend, and the mezzanine leg adds 850.
 |---|---|---|---|---|
 | Senior | reUSD | Third to absorb loss | 250 basis points | Instant when liquidity allows |
 | Mezzanine | reUSDe | Second to absorb loss | 850 basis points | Quarterly windows |
-| Equity | Not tokenised | First to absorb loss | Underwriting result | Not applicable |
+| Equity | Not tokenized | First to absorb loss | Underwriting result | Not applicable |
 
 The pricing is fixed rather than adaptive, which puts Re at the opposite end of the
 spectrum from the protocols in
@@ -127,7 +127,7 @@ available capacity, with requests filled pro rata if they exceed the surplus.
 
 That quarterly window is doing a great deal of work and deserves more attention than the
 spread does. Reinsurance capital is committed for a treaty period, and it cannot be
-returned before the exposure it is collateralising has run off, whatever a depositor
+returned before the exposure it is collateralizing has run off, whatever a depositor
 would prefer. The mezzanine leg is therefore illiquid for a structural reason rather
 than a policy one, which distinguishes it from the coverage gates described in
 [`04-liquidity`](../04-liquidity/README.md#every-protocol-restricts-exit-and-the-instruments-differ).
@@ -141,15 +141,15 @@ reUSD and 0.9 percent for reUSDe under a severe scenario defined as a 135 percen
 combined ratio. It also states that combined ratios have been below 100 percent across
 every underwriting year since inception.
 
-These numbers should be read the way any modelled loss distribution is read, which is as
+These numbers should be read the way any modeled loss distribution is read, which is as
 the output of an assumption rather than as a measurement. A combined ratio above 100
 percent means claims and expenses exceeded premiums, and the 135 percent scenario is a
 choice about how bad a bad year is. The section on calibration in
 [`01-fundamentals`](../01-fundamentals/README.md)
 applies directly and with some force: the arithmetic of the waterfall is exact, the
-probability attached to reaching any particular layer of it is a judgement, and the 2008
+probability attached to reaching any particular layer of it is a judgment, and the 2008
 episode that discredited the previous generation of structured credit was a failure of
-exactly that judgement rather than of the payment mechanism. A published track record of
+exactly that judgment rather than of the payment mechanism. A published track record of
 combined ratios below 100 percent is real evidence and it is also a short record taken
 during a period without a major catastrophe loss.
 

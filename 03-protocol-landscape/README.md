@@ -77,7 +77,7 @@ in [`../08-study-pareto/`](../08-study-pareto/README.md).
 
 ## BarnBridge SMART Yield (discontinued)
 
-The senior claim was issued as sBONDs (ERC-721; fixed, dated, and guaranteed) and the junior claim as jTokens (ERC-20; residual, first loss), with a moving average yield oracle setting the senior rate. The structure is notable for representing seniority as a nonfungible, dated instrument and juniority as a fungible, perpetual one. The protocol was discontinued in July 2023 and was the subject of a [Securities and Exchange Commission settlement](https://www.sec.gov/newsroom/press-releases/2023-258) in December 2023 — a regulatory outcome rather than a technical failure. Source: [SPEC.md](https://github.com/BarnBridge/BarnBridge-SmartYieldBonds/blob/master/SPEC.md).
+The senior claim was issued as sBONDs (ERC-721; fixed, dated, and guaranteed) and the junior claim as jTokens (ERC-20; residual, first loss), with a moving average yield oracle setting the senior rate. The structure is notable for representing seniority as a nonfungible, dated instrument and juniority as a fungible, perpetual one. The protocol was discontinued in July 2023 and was the subject of a [Securities and Exchange Commission settlement](https://www.sec.gov/newsroom/press-releases/2023-258) in December 2023: a regulatory outcome rather than a technical failure. Source: [SPEC.md](https://github.com/BarnBridge/BarnBridge-SmartYieldBonds/blob/master/SPEC.md).
 
 ## Centrifuge
 
@@ -89,14 +89,14 @@ senior tranche at the top, a junior tranche at the bottom, and any number of mez
 tranches between them, which makes Centrifuge one of only two protocols in this survey
 capable of expressing more than one subordination boundary.
 
-The commercially significant product is not a native tranche at all. JAAA is a tokenised
-feeder into the flagship AAA collateralised loan obligation strategy of Janus Henderson,
-so the underlying is a portfolio of the senior most tranches of real collateralised loan
+The commercially significant product is not a native tranche at all. JAAA is a tokenized
+feeder into the flagship AAA collateralized loan obligation strategy of Janus Henderson,
+so the underlying is a portfolio of the senior most tranches of real collateralized loan
 obligations with floating coupons resetting off SOFR. It came on chain in June 2025,
 reached roughly 687 to 690 million dollars of assets under management across eight
 networks, and entered Kraken Custody in June 2026. Separately, deRWA wrappers enforce
 compliance at the pool level and leave the resulting token transferable, so these
-positions trade on decentralised exchanges including Aerodrome, Balancer and Curve.
+positions trade on decentralized exchanges including Aerodrome, Balancer and Curve.
 
 Provides an asset pool, valuation, a waterfall, and settlement, with the coverage and
 pricing arithmetic held off chain. Centrifuge is by a wide margin the largest entity in
@@ -110,13 +110,13 @@ The Senior Pool issues FIDU (ERC-20); Backers occupy the junior, first loss posi
 
 ## Maple
 
-Lender positions are ERC-4626 shares. The loss order is writedown, then borrower collateral, then liquidation of the cover (junior) position ahead of lenders, then recoveries. Cover is thin — on the order of 0–3% and often unused — which demonstrates that on chain first loss capital is structurally smaller than the 8–12% equity typical of traditional structures. This is a constraint for the specification rather than a mechanic. Source: [defaults and impairments](https://docs.maple.finance/maple-for-lenders/defaults-and-impairments).
+Lender positions are ERC-4626 shares. The loss order is writedown, then borrower collateral, then liquidation of the cover (junior) position ahead of lenders, then recoveries. Cover is thin, on the order of 0–3% and often unused, which demonstrates that on chain first loss capital is structurally smaller than the 8–12% equity typical of traditional structures. This is a constraint for the specification rather than a mechanic. Source: [defaults and impairments](https://docs.maple.finance/maple-for-lenders/defaults-and-impairments).
 
 ## Strata
 
 A strategy feeds a CDO contract that measures gain as the change in total value since the last interaction, then applies the Dynamic Yield Split across three balances: Srt, the senior tranche, Jrt, the junior first loss tranche, both ERC-4626 with LayerZero OFT transferability, and a reserve.
 
-A generalised wrapper applying one engine to seven heterogeneous strategies. The senior rate is `MAX(benchmark floor, base APR × (1 − x − y·r^k))` where `r` is the senior share of total value; the junior claim is the residual, and the published junior formula is the conservation identity rearranged rather than an independent rule. Accounting is discrete and lazy — advanced only by a protocol action or a rate feed update — and the invariant `jrtTVL + srtTVL + reserveTVL == totalTVL` is restored on each advance. Loss and income share a single unconditional debit of the junior balance, so a yield shortfall against the floor impairs the junior tranche exactly as a default would.
+A generalized wrapper applying one engine to seven heterogeneous strategies. The senior rate is `MAX(benchmark floor, base APR × (1 − x − y·r^k))` where `r` is the senior share of total value; the junior claim is the residual, and the published junior formula is the conservation identity rearranged rather than an independent rule. Accounting is discrete and lazy, advanced only by a protocol action or a rate feed update, and the invariant `jrtTVL + srtTVL + reserveTVL == totalTVL` is restored on each advance. Loss and income share a single unconditional debit of the junior balance, so a yield shortfall against the floor impairs the junior tranche exactly as a default would.
 
 Exit friction is tiered across up to three coverage bands, each applying any combination of share lock, asset lock, and fee; below a minimum coverage threshold (105% for the Ethena market) senior issuance and junior redemption are suspended together. This is a finer instrument than Centrifuge's binary subordination gate, and Case B constitutes a genuine interest coverage cure by diverting junior capital to the senior entitlement. No mechanism retires senior principal to restore the ratio, so the structure still does not delever. Provides valuation, a waterfall, a partial coverage response, and settlement, the last through purpose built cooldown contracts rather than ERC-7540. Sources: [Dynamic Yield Split](https://docs.strata.markets/protocol-mechanism/dynamic-yield-split), [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview). A full economics level review is in [`09-study-strata`](../09-study-strata/README.md).
 
@@ -130,9 +130,9 @@ junior capital in front of it and is not impaired until that capital is exhauste
 the floor set per market at roughly 3 to 20 percent.
 
 The division of yield is set by one of three curves, the more advanced two of which move
-with utilisation, in the same family as the Idle and Strata splits. After a loss a market
+with utilization, in the same family as the Idle and Strata splits. After a loss a market
 can enter a fixed term state that restricts withdrawals, so a drawdown that reverses
-inside the window is never realised.
+inside the window is never realized.
 
 Provides an asset pool, valuation, a waterfall, a partial coverage response and
 settlement. There is no diversion of cash flow to repair a breached ratio, so the
@@ -145,12 +145,12 @@ which no other protocol here has. Sources:
 ## Re
 
 Re tranches an underwriting result rather than a credit spread. Stablecoin capital is
-deposited on chain and allocated into fully collateralised quota share reinsurance
+deposited on chain and allocated into fully collateralized quota share reinsurance
 treaties written by a licensed reinsurer, and the premiums earned on those treaties are
 what the depositors are paid. The capital stack has three ordered layers rather than the
 usual two: the equity of the reinsurer absorbs the first loss, recorded at 77 million
 dollars as of June 2026, then reUSDe as the mezzanine layer, then reUSD as the senior
-layer. Both tokenised legs therefore sit above a cushion the operator funds itself,
+layer. Both tokenized legs therefore sit above a cushion the operator funds itself,
 which is the reverse of the arrangement everywhere else in this survey.
 
 Pricing is fixed rather than adaptive. Both legs earn a blended benchmark, the seven day
@@ -190,7 +190,7 @@ Protocols that split a yield asset into a principal component and a yield compon
 
 A yield asset is wrapped as SY, the EIP-5115 wrapper that is a superset of ERC-4626, and the wrapper is then split into PT, the principal token that redeems one for one at maturity, and YT, which carries the variable yield until maturity.
 
-The principal token (PT) and yield token (YT) are both ERC-20. SY normalises the underlying yield source, and the split operates only against the SY `exchangeRate()`. The internal pyIndex is designed not to decrease, so yield volatility is absorbed by the YT first and the PT is ring fenced; the PT therefore occupies a position analogous to the senior tranche and the YT a position analogous to a first loss claim on yield. The structure has a fixed maturity, and the PT/YT oracle takes the maximum of the SY and PY indices to resist downward manipulation. Pendle's principal tokens implement ERC-4626 rather than EIP-5095. Sources: [Pendle documentation](https://docs.pendle.finance/pendle-v2/Introduction), [Minting](https://docs.pendle.finance/pendle-v2/ProtocolMechanics/YieldTokenization/Minting), [mixbytes analysis](https://mixbytes.io/blog/yield-tokenization-protocols-how-they-re-made-pendle).
+The principal token (PT) and yield token (YT) are both ERC-20. SY normalizes the underlying yield source, and the split operates only against the SY `exchangeRate()`. The internal pyIndex is designed not to decrease, so yield volatility is absorbed by the YT first and the PT is ring fenced; the PT therefore occupies a position analogous to the senior tranche and the YT a position analogous to a first loss claim on yield. The structure has a fixed maturity, and the PT/YT oracle takes the maximum of the SY and PY indices to resist downward manipulation. Pendle's principal tokens implement ERC-4626 rather than EIP-5095. Sources: [Pendle documentation](https://docs.pendle.finance/pendle-v2/Introduction), [Minting](https://docs.pendle.finance/pendle-v2/ProtocolMechanics/YieldTokenization/Minting), [mixbytes analysis](https://mixbytes.io/blog/yield-tokenization-protocols-how-they-re-made-pendle).
 
 ## Spectra
 
@@ -200,11 +200,11 @@ The same principal and yield split applied to interest bearing tokens: the princ
 
 The nondecreasing index is a valuation technique that applies to risk tranching as much as to cash flow tranching: it makes the protected leg insensitive to short term volatility in the source.
 
-Normalising first and splitting second means the split engine only ever reasons about one figure, the exchange rate of the wrapper, whatever the underlying yield source is. That is why one engine can sit over many strategies. Strata reaches the same result on the risk axis by a different route, see [`09-study-strata`](../09-study-strata/README.md).
+Normalizing first and splitting second means the split engine only ever reasons about one figure, the exchange rate of the wrapper, whatever the underlying yield source is. That is why one engine can sit over many strategies. Strata reaches the same result on the risk axis by a different route, see [`09-study-strata`](../09-study-strata/README.md).
 
 ---
 
-# Real world asset securitisation entrants
+# Real world asset securitization entrants
 
 Recent entrants, from 2025 and 2026, that come closest in intent to a full waterfall. They treat loss recognition as a first class element, which most DeFi designs do not.
 
@@ -212,16 +212,16 @@ Recent entrants, from 2025 and 2026, that come closest in intent to a full water
 
 A credit pool and a Credit Oracle sit behind two tokens: SOT, the Senior Obligation Token, and JOT, the Junior Obligation Token.
 
-Untangled uses explicit securitisation terminology and a Credit Oracle, which represents a direct attempt to provide on chain loss recognition. It is the most traditionally structured of the on chain models surveyed. The token standard is not yet verified and is likely ERC-20. Source: [documentation](https://docs.untangled.finance/docs/credio/Onchain-Private-Credit/Intro-Untangled-Pool/).
+Untangled uses explicit securitization terminology and a Credit Oracle, which represents a direct attempt to provide on chain loss recognition. It is the most traditionally structured of the on chain models surveyed. The token standard is not yet verified and is likely ERC-20. Source: [documentation](https://docs.untangled.finance/docs/credio/Onchain-Private-Credit/Intro-Untangled-Pool/).
 
 ## Galaxy CLO 2025-1
 
-A tokenised collateralised loan obligation (senior tranche at SOFR plus 570 basis points; initial 75M, expandable to 200M; on Avalanche). The waterfall operates off chain within the traditional structure, and the token represents the claim. This is useful as a reference for the form of a real collateralised loan obligation tranche rather than as on chain mechanics. Source: [PRNewswire](https://www.prnewswire.com/news-releases/galaxy-announces-initial-closing-of-debut-tokenized-clo-at-75-million-302662045.html).
+A tokenized collateralized loan obligation (senior tranche at SOFR plus 570 basis points; initial 75M, expandable to 200M; on Avalanche). The waterfall operates off chain within the traditional structure, and the token represents the claim. This is useful as a reference for the form of a real collateralized loan obligation tranche rather than as on chain mechanics. Source: [PRNewswire](https://www.prnewswire.com/news-releases/galaxy-announces-initial-closing-of-debut-tokenized-clo-at-75-million-302662045.html).
 
 ## Tradable
 
-Tokenised private credit on ZKsync, following the same wrapper pattern of an off chain waterfall and an on chain claim. Likely permissioned (ERC-3643 or ERC-1400 family); not verified. Source: [Chainlink analysis](https://chain.link/article/onchain-private-lending).
+Tokenized private credit on ZKsync, following the same wrapper pattern of an off chain waterfall and an on chain claim. Likely permissioned (ERC-3643 or ERC-1400 family); not verified. Source: [Chainlink analysis](https://chain.link/article/onchain-private-lending).
 
 ## Assessment
 
-These wrappers demonstrate demand for tokenised tranches but retain the waterfall off chain; they tokenise the output of a traditional structure rather than specifying the engine. Untangled is the exception in bringing loss recognition on chain. The token standards used by Untangled, Galaxy, and Tradable are not confirmed; see [`05-token-standards`](../05-token-standards/README.md#adoption-in-practice-diverges-from-what-the-standards-intended).
+These wrappers demonstrate demand for tokenized tranches but retain the waterfall off chain; they tokenise the output of a traditional structure rather than specifying the engine. Untangled is the exception in bringing loss recognition on chain. The token standards used by Untangled, Galaxy, and Tradable are not confirmed; see [`05-token-standards`](../05-token-standards/README.md#adoption-in-practice-diverges-from-what-the-standards-intended).

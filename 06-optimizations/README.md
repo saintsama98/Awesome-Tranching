@@ -88,7 +88,7 @@ collateral, there is no scenario in which the structure owes more than it holds,
 therefore no liquidation. Because there is no liquidation, there is no need for a
 continuous price feed. The oracle is consulted once, at maturity, which means it can be
 slow, expensive and adversarial rather than fast and cheap. Buterin's own framing of that
-advantage is worth quoting because it generalises well past this application: put a
+advantage is worth quoting because it generalizes well past this application: put a
 prediction market in front of a safe but expensive oracle, and only fall back to the
 expensive oracle when there is serious disagreement.
 
@@ -179,7 +179,7 @@ retaining participation in the upside. Calamos runs a tiered version of exactly 
 Bitcoin, with one hundred percent, ninety percent and eighty percent protection levels
 launched in October 2025, and BlackRock's Bitcoin premium income product writes covered
 calls on twenty five to thirty five percent of the portfolio to target a fifteen to twenty
-five percent annualised distribution.
+five percent annualized distribution.
 
 The on chain observation is that the hard component of that assembly is already built and
 liquid. A principal token from a yield splitting protocol is a zero coupon bond: it
@@ -199,13 +199,13 @@ who is posting the note as collateral somewhere else.
 
 ## Looping a senior tranche puts back exactly the risk the tranche removed
 
-The most widely practised optimization in this area is also the one whose logic most
+The most widely practiced optimization in this area is also the one whose logic most
 deserves scrutiny.
 
 A senior tranche carries contractual downside protection, which makes it better collateral
 than the raw yield bearing asset beneath it. A lending market can reasonably lend against
 it at a higher ratio. So a curator tranches a strategy, keeps the senior leg, borrows
-against it at a favourable rate, and redeploys, with the protection nominally still in
+against it at a favorable rate, and redeploys, with the protection nominally still in
 place underneath the leverage. Dialectic describes doing precisely this in work published
 with Royco in July 2026.
 
@@ -255,7 +255,7 @@ on a protected claim and stacks two different kinds of protection with different
 maturities on one position.
 
 The history here is not encouraging and should be stated rather than glossed. The
-traditional market built exactly this, called it a collateralised debt obligation squared,
+traditional market built exactly this, called it a collateralized debt obligation squared,
 and the results in 2008 were poor. That is not an argument that it cannot be done well. It
 is an argument for examining each layer separately, which reduces to four questions.
 
@@ -276,8 +276,8 @@ at the outer layer, no, and yes.
 ## Making the curator post the first loss capital solves demand and creates contagion
 
 The binding constraint across this whole sector is that somebody has to want the junior
-tranche. A December 2025 paper by Zbandut and Goldstein on institutionalising risk
-curation in decentralised credit proposes an answer that is being adopted in practice:
+tranche. A December 2025 paper by Zbandut and Goldstein on institutionalizing risk
+curation in decentralized credit proposes an answer that is being adopted in practice:
 have the curator who assesses the risk commit the first loss capital.
 
 The argument is an alignment one rather than a capital one. A curator who evaluates credit
@@ -296,7 +296,7 @@ the operator's own balance sheet.
 The paper is honest about the cost, and it is the right cost to worry about. Curator
 networks create contagion channels, because a curator failure propagates across every
 protocol that curator touches, and the same reputational mechanism that disciplines them in
-normal conditions synchronises their behaviour in stressed ones. A sector in which the
+normal conditions synchronizes their behavior in stressed ones. A sector in which the
 first loss capital is concentrated in a small number of curators has replaced a demand
 problem with a correlation problem, which is a worse problem and a less visible one.
 
@@ -326,7 +326,7 @@ weak point of tranching, then risks that settle observably on chain are the natu
 for tranching to work properly.
 
 The stated extensions are the interesting part of the roadmap and each is a research
-problem in itself. Undercollateralised tranches raise capital efficiency and reintroduce
+problem in itself. Undercollateralized tranches raise capital efficiency and reintroduce
 the possibility of a shortfall. Reinsurance vaults pool tail risk across several insurance
 vaults, which is a second order structure and carries the correlation question with it.
 Dynamic pricing through bonding curves or auctions is an attempt to discover the premium
@@ -337,7 +337,7 @@ rather than declare it, which is something no protocol in this repository curren
 ## Correlation is the input nobody on chain can price, and the reason is uncomfortable
 
 Traditional tranche markets do not merely tolerate correlation, they trade it. A bespoke
-tranche is a customised slice of portfolio credit risk built to a chosen sector, maturity
+tranche is a customized slice of portfolio credit risk built to a chosen sector, maturity
 and pair of attachment and detachment points, and what a buyer of a mezzanine tranche is
 really expressing is a view on how defaults cluster rather than on how many there are. The
 market reached roughly 169 billion dollars of bespoke tranche notional by July 2005, which
