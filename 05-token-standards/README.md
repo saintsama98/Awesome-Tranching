@@ -1,39 +1,22 @@
 # Token Standards
 
-> Reading order: reference material, readable at any point. The specifications tranched
-> products are built on, what each one covers, and which of them are actually used.
+> Reading order: reference material, readable at any point. The specifications tranched products are built on, what each one covers, and which of them are actually used.
 
-The ERCs that tranched products are built on, what each one specifies, and which ones
-are actually used. Header fields were retrieved from `eips.ethereum.org` on 2026-06-19.
+The ERCs that tranched products are built on, what each one specifies, and which ones are actually used. Header fields were retrieved from `eips.ethereum.org` on 2026-06-19.
 
-- [timeline](.#the-chronology-shows-what-was-standardized-and-what-was-not): Every relevant standard in order of creation, with a
-  dependency ordered reading path.
-- [tranche token layer](.#the-substrate-for-representing-a-tranche-as-a-token): Representing a tranche as a
-  token: ERC-20, ERC-1155, ERC-6909, ERC-3475.
-- [vault and yield layer](.#the-vault-and-yield-layer-beneath-a-tranche-structure): The settlement and yield
-  wrapper base: ERC-4626, ERC-7540, ERC-7575, and the cash flow split tokens EIP-5115
-  and EIP-5095.
-- [compliance branch](.#the-compliance-branch-governs-who-may-hold-not-how-a-structure-is-tranched): ERC-1400 and ERC-1410, ERC-3643 and
-  ERC-7518. Who may hold a token, which is adjacent to tranching rather than part of it.
-- [adoption in practice](.#adoption-in-practice-diverges-from-what-the-standards-intended): What each surveyed protocol
-  actually uses.
+- [timeline](.#the-chronology-shows-what-was-standardized-and-what-was-not): Every relevant standard in order of creation, with a dependency ordered reading path.
+- [tranche token layer](.#the-substrate-for-representing-a-tranche-as-a-token): Representing a tranche as a token: ERC-20, ERC-1155, ERC-6909, ERC-3475.
+- [vault and yield layer](.#the-vault-and-yield-layer-beneath-a-tranche-structure): The settlement and yield wrapper base: ERC-4626, ERC-7540, ERC-7575, and the cash flow split tokens EIP-5115 and EIP-5095.
+- [compliance branch](.#the-compliance-branch-governs-who-may-hold-not-how-a-structure-is-tranched): ERC-1400 and ERC-1410, ERC-3643 and ERC-7518. Who may hold a token, which is adjacent to tranching rather than part of it.
+- [adoption in practice](.#adoption-in-practice-diverges-from-what-the-standards-intended): What each surveyed protocol actually uses.
 
 ## The short version
 
-The token layer and the settlement layer are well covered. ERC-20 for the tranche token,
-ERC-4626 underneath it, ERC-7540 where settlement has to be asynchronous. A reader can
-follow those specifications and know what they are looking at.
+The token layer and the settlement layer are well covered. ERC-20 for the tranche token, ERC-4626 underneath it, ERC-7540 where settlement has to be asynchronous. A reader can follow those specifications and know what they are looking at.
 
-Nothing specifies payment priority, loss allocation order, or coverage tests. That part
-of every protocol is written from scratch, which is why the codebases in
-[`03-protocol-landscape`](../03-protocol-landscape/README.md) are not readily comparable and
-have to be read individually.
+Nothing specifies payment priority, loss allocation order, or coverage tests. That part of every protocol is written from scratch, which is why the codebases in [`03-protocol-landscape`](../03-protocol-landscape/README.md) are not readily comparable and have to be read individually.
 
-There is also a gap between what is best suited and what is used. ERC-3475 was designed
-for tranche like instruments and is barely deployed; ERC-6909 offers shared accounting
-across classes and is not used for tranches. Most protocols deploy one plain ERC-20 per
-tranche instead, for reasons set out in
-[`04-liquidity`](../04-liquidity/README.md#secondary-markets-relocate-the-friction-rather-than-removing-it).
+There is also a gap between what is best suited and what is used. ERC-3475 was designed for tranche like instruments and is barely deployed; ERC-6909 offers shared accounting across classes and is not used for tranches. Most protocols deploy one plain ERC-20 per tranche instead, for reasons set out in [`04-liquidity`](../04-liquidity/README.md#secondary-markets-relocate-the-friction-rather-than-removing-it).
 
 ---
 
@@ -180,9 +163,7 @@ Further detail: [tranche token layer](.#the-substrate-for-representing-a-tranche
 
 # Adoption in practice diverges from what the standards intended
 
-The standards each surveyed protocol actually uses, drawn from the protocol notes in
-[`03-protocol-landscape`](../03-protocol-landscape/README.md) and the close readings in
-[`03-protocol-landscape`](../03-protocol-landscape/README.md).
+The standards each surveyed protocol actually uses, drawn from the protocol notes in [`03-protocol-landscape`](../03-protocol-landscape/README.md) and the close readings in [`03-protocol-landscape`](../03-protocol-landscape/README.md).
 
 | Protocol | Standards adopted | Note |
 |---|---|---|
@@ -199,23 +180,6 @@ The standards each surveyed protocol actually uses, drawn from the protocol note
 | Untangled | ERC-20 for SOT and JOT, unverified | Likely plain ERC-20 |
 | Galaxy, Tradable | Unverified, likely ERC-3643 or ERC-1400 | Permissioned real world asset wrappers |
 
-Five things fall out of that table. ERC-20 predominates, with each tranche generally
-deployed as its own contract and no shared accounting between them, which is the minimal
-possible representation of a structure. ERC-3475, the one standard designed specifically
-to express tranche like instruments, has essentially no production adoption, and
-protocols reconstruct an inferior version of it with pairs of ERC-20 tokens instead.
-ERC-1155 and ERC-6909, which would give several classes shared accounting inside one
-contract, are not used for tranches at all. ERC-4626 is the most widely adopted
-settlement base and ERC-7540, the asynchronous extension written for exactly this
-problem, has a single adopter in the protocol that coauthored it. And two standards from
-outside the obvious sequence keep appearing: ERC-721 wherever a leg carries terms
-specific to its holder, and EIP-5115 as the yield wrapper beneath a cash flow split.
+Five things fall out of that table. ERC-20 predominates, with each tranche generally deployed as its own contract and no shared accounting between them, which is the minimal possible representation of a structure. ERC-3475, the one standard designed specifically to express tranche like instruments, has essentially no production adoption, and protocols reconstruct an inferior version of it with pairs of ERC-20 tokens instead. ERC-1155 and ERC-6909, which would give several classes shared accounting inside one contract, are not used for tranches at all. ERC-4626 is the most widely adopted settlement base and ERC-7540, the asynchronous extension written for exactly this problem, has a single adopter in the protocol that coauthored it. And two standards from outside the obvious sequence keep appearing: ERC-721 wherever a leg carries terms specific to its holder, and EIP-5115 as the yield wrapper beneath a cash flow split.
 
-The implication for a reader is practical rather than editorial. The standards best
-suited to tranching are largely unused in that role, and the prevailing practice is
-ERC-20 plus ERC-4626 with an engine written from scratch for each protocol. Anyone
-approaching one of these codebases should expect the tranching logic to be bespoke and
-should not expect a shared interface through which to compare two of them. The reason
-the industry settled on the worse representation is liquidity rather than ignorance, and
-it is set out in
-[`04-liquidity`](../04-liquidity/README.md#secondary-markets-relocate-the-friction-rather-than-removing-it).
+The implication for a reader is practical rather than editorial. The standards best suited to tranching are largely unused in that role, and the prevailing practice is ERC-20 plus ERC-4626 with an engine written from scratch for each protocol. Anyone approaching one of these codebases should expect the tranching logic to be bespoke and should not expect a shared interface through which to compare two of them. The reason the industry settled on the worse representation is liquidity rather than ignorance, and it is set out in [`04-liquidity`](../04-liquidity/README.md#secondary-markets-relocate-the-friction-rather-than-removing-it).
