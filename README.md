@@ -4,23 +4,15 @@ Tranching in DeFi: an open research repository on how tranching works on chain.
 
 > This project was developed privately and published once it had been tested against its original design. Its full development history is published on a single `main` branch so reviewers can follow it in one place.
 
-Research on how tranching works on chain: what it is, the forms it takes, who is running
-it, how liquidity behaves inside it, and what the live systems actually do when you work
-through their economics.
+Research on how tranching works on chain: what it is, the forms it takes, who is running it, how liquidity behaves inside it, and what the live systems actually do when you work through their economics.
 
-This is a research repository. It does not propose a standard, ship a library, or
-document a product. Where a note records a gap between traditional structured finance and
-the on chain versions, it records it as a finding about the sector.
+This is a research repository. It does not propose a standard, ship a library, or document a product. Where a note records a gap between traditional structured finance and the on chain versions, it records it as a finding about the sector.
 
-A two tranche lending pool rebuilt from Centrifuge's Tinlake, with the waterfall rules
-written down and tested, lives in
-[Hooke-Tinlake-Trancher](https://github.com/saintsama98/Hooke-Tinlake-Trancher).
+A two tranche lending pool rebuilt from Centrifuge's Tinlake, with the waterfall rules written down and tested, lives in [Hooke-Tinlake-Trancher](https://github.com/saintsama98/Hooke-Tinlake-Trancher).
 
 ## Organization
 
-Every directory holds one document, numbered in reading order. Sections one to six are
-general and are meant to be read in sequence. Sections seven to eleven are studies of
-individual protocols and are self contained.
+Every directory holds one document, numbered in reading order. Sections one to six are general and are meant to be read in sequence. Sections seven to eleven are studies of individual protocols and are self contained.
 
 | | Directory | Subject |
 |---|---|---|
@@ -36,65 +28,31 @@ individual protocols and are self contained.
 | 10 | [`10-study-royco/`](./10-study-royco/README.md) | Three legs, the third paid to provide an exit |
 | 11 | [`11-study-re/`](./11-study-re/README.md) | Reinsurance capital and a three layer stack |
 
-[`METHOD.md`](./METHOD.md) states how sources are handled and what the conventions mean.
-[`SOURCES.md`](./SOURCES.md) is the annotated bibliography.
+[`METHOD.md`](./METHOD.md) states how sources are handled and what the conventions mean. [`SOURCES.md`](./SOURCES.md) is the annotated bibliography.
 
 ## Findings
 
-Six observations recur across the whole body of work and are the reason it is worth
-reading in order.
+Six observations recur across the whole body of work and are the reason it is worth reading in order.
 
-**Valuation is the trust assumption, not subordination.** Every guarantee in a tranched
-structure is conditional on the number the waterfall is applied to. That number is
-sometimes an oracle, sometimes an actuarial estimate from a regulated entity, and in at
-least one live case a figure entered by an administrator with no oracle behind it. The
-arithmetic above it can be audited seventeen times and formally verified without changing
-this.
+**Valuation is the trust assumption, not subordination.** Every guarantee in a tranched structure is conditional on the number the waterfall is applied to. That number is sometimes an oracle, sometimes an actuarial estimate from a regulated entity, and in at least one live case a figure entered by an administrator with no oracle behind it. The arithmetic above it can be audited seventeen times and formally verified without changing this.
 
-**Nothing on chain cures a breach.** Traditional structures measure a coverage ratio each
-period and redirect cash to repair it. Across the sector, protocols refuse settlements,
-tier exit friction, defer loss recognition, or divert income to meet a senior entitlement.
-None retires senior principal to restore a ratio. The structures do not delever.
+**Nothing on chain cures a breach.** Traditional structures measure a coverage ratio each period and redirect cash to repair it. Across the sector, protocols refuse settlements, tier exit friction, defer loss recognition, or divert income to meet a senior entitlement. None retires senior principal to restore a ratio. The structures do not delever.
 
-**First loss capital is thin.** Equity in a collateralized loan obligation is roughly
-eight to ten percent. On chain cover positions run from zero to three percent at the low
-end to around twelve percent at the measured high end. A senior claim behind a three
-percent cushion is a different instrument from one behind twenty, and the documentation
-rarely makes the difference visible.
+**First loss capital is thin.** Equity in a collateralized loan obligation is roughly eight to ten percent. On chain cover positions run from zero to three percent at the low end to around twelve percent at the measured high end. A senior claim behind a three percent cushion is a different instrument from one behind twenty, and the documentation rarely makes the difference visible.
 
-**Junior demand is the binding constraint.** The protocols that failed commercially failed
-for want of capital willing to stand first in line at a price the senior side would
-accept. Every mechanism that protects the senior claim by restricting junior exit makes
-the junior claim harder to sell, and the sector has not escaped that circle.
+**Junior demand is the binding constraint.** The protocols that failed commercially failed for want of capital willing to stand first in line at a price the senior side would accept. Every mechanism that protects the senior claim by restricting junior exit makes the junior claim harder to sell, and the sector has not escaped that circle.
 
-**The engine is always bespoke.** The token layer and the settlement layer are well
-standardized. Payment priority, loss ordering and coverage testing are not standardized at
-all, so every protocol writes its own and no two codebases are readily comparable.
+**The engine is always bespoke.** The token layer and the settlement layer are well standardized. Payment priority, loss ordering and coverage testing are not standardized at all, so every protocol writes its own and no two codebases are readily comparable.
 
-**A protected claim can be manufactured two ways, and the sector only uses one.**
-Subordination buys protection with somebody else's capital and needs a junior tranche.
-Payoff decomposition buys it by giving up upside and needs nobody, because a tranche is a
-spread on the loss distribution and the same exposure can be assembled from options. Every
-protocol here uses the first route. The second is being built elsewhere and is not
-generally recognized as tranching. See
-[`06-optimizations`](./06-optimizations/README.md).
+**A protected claim can be manufactured two ways, and the sector only uses one.** Subordination buys protection with somebody else's capital and needs a junior tranche. Payoff decomposition buys it by giving up upside and needs nobody, because a tranche is a spread on the loss distribution and the same exposure can be assembled from options. Every protocol here uses the first route. The second is being built elsewhere and is not generally recognized as tranching. See [`06-optimizations`](./06-optimizations/README.md).
 
-**The direction of travel is from mechanism toward distribution.** Centrifuge became the
-largest entity in the sector by tokenizing a claim on a traditional waterfall rather than
-building one. Pareto repointed a working tranching engine at institutional private credit.
-Re started from an insurance balance sheet. The scale is going where the assets already
-had an institutional buyer.
+**The direction of travel is from mechanism toward distribution.** Centrifuge became the largest entity in the sector by tokenizing a claim on a traditional waterfall rather than building one. Pareto repointed a working tranching engine at institutional private credit. Re started from an insurance balance sheet. The scale is going where the assets already had an institutional buyer.
 
 ## Conventions
 
-Sources are cited inline and are preferably primary: a specification, a repository, a
-protocol's own documentation, or an independent review. Figures carry the date their
-source gives and are not continuously updated. Where a claim could not be verified, the
-text says so rather than filling the gap, and terms with no source at all are recorded in
-[`06-optimizations/`](./06-optimizations/README.md) as unverified.
+Sources are cited inline and are preferably primary: a specification, a repository, a protocol's own documentation, or an independent review. Figures carry the date their source gives and are not continuously updated. Where a claim could not be verified, the text says so rather than filling the gap, and terms with no source at all are recorded in [`06-optimizations/`](./06-optimizations/README.md) as unverified.
 
-There are no diagrams. Everything is prose, tables, or the formulas a protocol publishes.
-Deprecated systems are covered only where a live system cannot be understood without them.
+There are no diagrams. Everything is prose, tables, or the formulas a protocol publishes. Deprecated systems are covered only where a live system cannot be understood without them.
 
 ## Status
 
