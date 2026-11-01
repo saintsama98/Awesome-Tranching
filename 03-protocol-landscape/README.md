@@ -1,79 +1,30 @@
 # The Protocol Landscape
 
-> Reading order: after [`../02-forms-of-tranching/`](../02-forms-of-tranching/README.md).
-> This document is the survey. It sets out the shape every tranched protocol shares, then
-> works through who has built what.
+> Reading order: after [`../02-forms-of-tranching/`](../02-forms-of-tranching/README.md). This document is the survey. It sets out the shape every tranched protocol shares, then works through who has built what.
 
-Every tranched protocol surveyed here is assembled from the same five parts. Knowing the
-parts is useful less as a taxonomy than as a reading order: the differences between these
-protocols are almost entirely a matter of which parts they have, how much of each part
-lives on chain, and which of them the documentation quietly declines to describe.
+Every tranched protocol surveyed here is assembled from the same five parts. Knowing the parts is useful less as a taxonomy than as a reading order: the differences between these protocols are almost entirely a matter of which parts they have, how much of each part lives on chain, and which of them the documentation quietly declines to describe.
 
-The first part is the **asset pool**, the source of both the cash flow and the loss.
-Usually this is a strategy reached through an adapter, either an ERC-4626 vault or an
-[`05-token-standards`](../05-token-standards/README.md#the-vault-and-yield-layer-beneath-a-tranche-structure), though in the case of Re
-it is a book of reinsurance treaties and not a DeFi position at all. The second part is
-**valuation and loss accounting**, meaning the determination of what the pool is worth
-and the recognition that a loss has occurred. No standard covers this, and it carries the
-trust assumption on which everything above it rests.
+The first part is the **asset pool**, the source of both the cash flow and the loss. Usually this is a strategy reached through an adapter, either an ERC-4626 vault or an [`05-token-standards`](../05-token-standards/README.md#the-vault-and-yield-layer-beneath-a-tranche-structure), though in the case of Re it is a book of reinsurance treaties and not a DeFi position at all. The second part is **valuation and loss accounting**, meaning the determination of what the pool is worth and the recognition that a loss has occurred. No standard covers this, and it carries the trust assumption on which everything above it rests.
 
-The third part is the **waterfall** itself: cash fills the senior claim first and the
-junior claim takes the remainder, while loss reduces the junior claim first. The fourth
-is **coverage tests and cure**, meaning the periodic measurement of a ratio and the
-rerouting of cash flow while that ratio sits below its trigger, described in
-[`01-fundamentals`](../01-fundamentals/README.md). The fifth is
-**settlement**, meaning how value actually reaches a holder, whether immediately, through
-an epoch, or through a queue. Parts three and four sit between the accounting and the
-tokens, and where there is an epoch, the waterfall executes at its boundary.
+The third part is the **waterfall** itself: cash fills the senior claim first and the junior claim takes the remainder, while loss reduces the junior claim first. The fourth is **coverage tests and cure**, meaning the periodic measurement of a ratio and the rerouting of cash flow while that ratio sits below its trigger, described in [`01-fundamentals`](../01-fundamentals/README.md). The fifth is **settlement**, meaning how value actually reaches a holder, whether immediately, through an epoch, or through a queue. Parts three and four sit between the accounting and the tokens, and where there is an epoch, the waterfall executes at its boundary.
 
-Part four is the one that is generally missing. If you took the best available
-implementation of each part from across the sector you would end up with the `IdleCDO`
-engine and its dynamic yield split, the Centrifuge subordination ratio gate, ERC-7540
-settlement, and the fixed excess spread allocation Goldfinch uses. Assembled, that covers
-parts one, two, three and five, and still contains no mechanism that actively diverts
-cash flow to repair a breached ratio. Strata comes closest by diverting junior capital to
-meet the senior interest entitlement, and even it never retires senior principal, so the
-structure does not delever. The protocol by protocol detail is in
-[risk tranching protocols](.#risk-tranching-protocols).
+Part four is the one that is generally missing. If you took the best available implementation of each part from across the sector you would end up with the `IdleCDO` engine and its dynamic yield split, the Centrifuge subordination ratio gate, ERC-7540 settlement, and the fixed excess spread allocation Goldfinch uses. Assembled, that covers parts one, two, three and five, and still contains no mechanism that actively diverts cash flow to repair a breached ratio. Strata comes closest by diverting junior capital to meet the senior interest entitlement, and even it never retires senior principal, so the structure does not delever. The protocol by protocol detail is in [risk tranching protocols](.#risk-tranching-protocols).
 
-The frame also makes the differences legible. Royco adds a sixth thing that is not on
-this list at all, a paid provider of exit liquidity, which belongs to part five and turns
-it from a constraint into a priced position. Re has the most complete version of part
-three, with three ordered layers, and the weakest on chain version of part two, since the
-value of a reinsurance position is an actuarial estimate reported in from outside.
-Centrifuge had a strong part four in Tinlake and moved it off chain in its successor. In
-each case the question worth asking is not whether the protocol is tranched but which
-parts it actually implements and where each of them runs.
+The frame also makes the differences legible. Royco adds a sixth thing that is not on this list at all, a paid provider of exit liquidity, which belongs to part five and turns it from a constraint into a priced position. Re has the most complete version of part three, with three ordered layers, and the weakest on chain version of part two, since the value of a reinsurance position is an actuarial estimate reported in from outside. Centrifuge had a strong part four in Tinlake and moved it off chain in its successor. In each case the question worth asking is not whether the protocol is tranched but which parts it actually implements and where each of them runs.
 
 ---
 
 # Risk tranching protocols
 
-Protocols that implement senior and junior subordination, meaning the legs differ in who
-absorbs loss first. Each is described against the five parts above. Figures are as
-reported at the dates their sources give and are not continuously updated.
+Protocols that implement senior and junior subordination, meaning the legs differ in who absorbs loss first. Each is described against the five parts above. Figures are as reported at the dates their sources give and are not continuously updated.
 
 ## Pareto
 
-The protocol formerly called Idle Finance, and the most complete general purpose
-tranching engine built in DeFi. A yield source feeds an engine that tracks a virtual
-price and divides interest between a senior class and a junior class, with the division
-recomputed from the total value of both classes at every deposit and redemption rather
-than fixed at launch. The junior class absorbs loss first and the senior class is reached
-only once the junior class is exhausted.
+The protocol formerly called Idle Finance, and the most complete general purpose tranching engine built in DeFi. A yield source feeds an engine that tracks a virtual price and divides interest between a senior class and a junior class, with the division recomputed from the total value of both classes at every deposit and redemption rather than fixed at launch. The junior class absorbs loss first and the senior class is reached only once the junior class is exhausted.
 
-The engine is now pointed at institutional private credit rather than at DeFi yield.
-Pareto operates credit vaults with configurable rates, lockups, withdrawal cycles,
-reserve ratios and tranches, lending to institutional borrowers underwritten off chain,
-and issues USP, a synthetic dollar minted one for one against stablecoin deposits and
-backed by that credit exposure. The FalconX credit vault reached a reported 144 million
-dollars on 23 June 2026 at a thirty day gross yield of 8.25 percent before fees, and
-includes equity tranches absorbing first loss. Reported protocol value locked sits between
-151 and 227 million dollars depending on the source, both figures from March 2026.
+The engine is now pointed at institutional private credit rather than at DeFi yield. Pareto operates credit vaults with configurable rates, lockups, withdrawal cycles, reserve ratios and tranches, lending to institutional borrowers underwritten off chain, and issues USP, a synthetic dollar minted one for one against stablecoin deposits and backed by that credit exposure. The FalconX credit vault reached a reported 144 million dollars on 23 June 2026 at a thirty day gross yield of 8.25 percent before fees, and includes equity tranches absorbing first loss. Reported protocol value locked sits between 151 and 227 million dollars depending on the source, both figures from March 2026.
 
-Provides valuation, a waterfall priced continuously by coverage, and settlement. There is
-no coverage test and no diversion of cash flow, so loss absorption is passive. Full study
-in [`../08-study-pareto/`](../08-study-pareto/README.md).
+Provides valuation, a waterfall priced continuously by coverage, and settlement. There is no coverage test and no diversion of cash flow, so loss absorption is passive. Full study in [`../08-study-pareto/`](../08-study-pareto/README.md).
 
 ## BarnBridge SMART Yield (discontinued)
 
@@ -81,28 +32,11 @@ The senior claim was issued as sBONDs (ERC-721; fixed, dated, and guaranteed) an
 
 ## Centrifuge
 
-Pools, tranche tokens and investment logic are native to EVM chains under the current
-architecture, with the Centrifuge Chain retaining governance, asset documentation and
-protocol metadata, and deployments spanning Ethereum, Base, Arbitrum, Avalanche, BNB
-Chain and Plume. The documented tranche model is general rather than fixed at two: a
-senior tranche at the top, a junior tranche at the bottom, and any number of mezzanine
-tranches between them, which makes Centrifuge one of only two protocols in this survey
-capable of expressing more than one subordination boundary.
+Pools, tranche tokens and investment logic are native to EVM chains under the current architecture, with the Centrifuge Chain retaining governance, asset documentation and protocol metadata, and deployments spanning Ethereum, Base, Arbitrum, Avalanche, BNB Chain and Plume. The documented tranche model is general rather than fixed at two: a senior tranche at the top, a junior tranche at the bottom, and any number of mezzanine tranches between them, which makes Centrifuge one of only two protocols in this survey capable of expressing more than one subordination boundary.
 
-The commercially significant product is not a native tranche at all. JAAA is a tokenized
-feeder into the flagship AAA collateralized loan obligation strategy of Janus Henderson,
-so the underlying is a portfolio of the senior most tranches of real collateralized loan
-obligations with floating coupons resetting off SOFR. It came on chain in June 2025,
-reached roughly 687 to 690 million dollars of assets under management across eight
-networks, and entered Kraken Custody in June 2026. Separately, deRWA wrappers enforce
-compliance at the pool level and leave the resulting token transferable, so these
-positions trade on decentralized exchanges including Aerodrome, Balancer and Curve.
+The commercially significant product is not a native tranche at all. JAAA is a tokenized feeder into the flagship AAA collateralized loan obligation strategy of Janus Henderson, so the underlying is a portfolio of the senior most tranches of real collateralized loan obligations with floating coupons resetting off SOFR. It came on chain in June 2025, reached roughly 687 to 690 million dollars of assets under management across eight networks, and entered Kraken Custody in June 2026. Separately, deRWA wrappers enforce compliance at the pool level and leave the resulting token transferable, so these positions trade on decentralized exchanges including Aerodrome, Balancer and Curve.
 
-Provides an asset pool, valuation, a waterfall, and settlement, with the coverage and
-pricing arithmetic held off chain. Centrifuge is by a wide margin the largest entity in
-this survey and it got there by distributing a claim on a traditional waterfall rather
-than by building one. Full study in
-[`../07-study-centrifuge/`](../07-study-centrifuge/README.md).
+Provides an asset pool, valuation, a waterfall, and settlement, with the coverage and pricing arithmetic held off chain. Centrifuge is by a wide margin the largest entity in this survey and it got there by distributing a claim on a traditional waterfall rather than by building one. Full study in [`../07-study-centrifuge/`](../07-study-centrifuge/README.md).
 
 ## Goldfinch
 
@@ -122,54 +56,19 @@ Exit friction is tiered across up to three coverage bands, each applying any com
 
 ## Royco
 
-Three legs rather than two: a senior tranche, a junior tranche, and a senior liquidity
-provider that runs an automated market maker pool of senior shares against the quote
-asset of the market. Yield flows out of the senior leg to both of the others, paying
-separately for coverage and for an exit. Every senior position has a minimum amount of
-junior capital in front of it and is not impaired until that capital is exhausted, with
-the floor set per market at roughly 3 to 20 percent.
+Three legs rather than two: a senior tranche, a junior tranche, and a senior liquidity provider that runs an automated market maker pool of senior shares against the quote asset of the market. Yield flows out of the senior leg to both of the others, paying separately for coverage and for an exit. Every senior position has a minimum amount of junior capital in front of it and is not impaired until that capital is exhausted, with the floor set per market at roughly 3 to 20 percent.
 
-The division of yield is set by one of three curves, the more advanced two of which move
-with utilization, in the same family as the Idle and Strata splits. After a loss a market
-can enter a fixed term state that restricts withdrawals, so a drawdown that reverses
-inside the window is never realized.
+The division of yield is set by one of three curves, the more advanced two of which move with utilization, in the same family as the Idle and Strata splits. After a loss a market can enter a fixed term state that restricts withdrawals, so a drawdown that reverses inside the window is never realized.
 
-Provides an asset pool, valuation, a waterfall, a partial coverage response and
-settlement. There is no diversion of cash flow to repair a breached ratio, so the
-structure does not delever. What it adds instead is a paid counterparty on the exit,
-which no other protocol here has. Sources:
-[Royco overview](https://docs.royco.org/royco-overview),
-[Royco Dawn repository](https://github.com/roycoprotocol/royco-dawn/). Full study in
-[`10-study-royco`](../10-study-royco/README.md).
+Provides an asset pool, valuation, a waterfall, a partial coverage response and settlement. There is no diversion of cash flow to repair a breached ratio, so the structure does not delever. What it adds instead is a paid counterparty on the exit, which no other protocol here has. Sources: [Royco overview](https://docs.royco.org/royco-overview), [Royco Dawn repository](https://github.com/roycoprotocol/royco-dawn/). Full study in [`10-study-royco`](../10-study-royco/README.md).
 
 ## Re
 
-Re tranches an underwriting result rather than a credit spread. Stablecoin capital is
-deposited on chain and allocated into fully collateralized quota share reinsurance
-treaties written by a licensed reinsurer, and the premiums earned on those treaties are
-what the depositors are paid. The capital stack has three ordered layers rather than the
-usual two: the equity of the reinsurer absorbs the first loss, recorded at 77 million
-dollars as of June 2026, then reUSDe as the mezzanine layer, then reUSD as the senior
-layer. Both tokenized legs therefore sit above a cushion the operator funds itself,
-which is the reverse of the arrangement everywhere else in this survey.
+Re tranches an underwriting result rather than a credit spread. Stablecoin capital is deposited on chain and allocated into fully collateralized quota share reinsurance treaties written by a licensed reinsurer, and the premiums earned on those treaties are what the depositors are paid. The capital stack has three ordered layers rather than the usual two: the equity of the reinsurer absorbs the first loss, recorded at 77 million dollars as of June 2026, then reUSDe as the mezzanine layer, then reUSD as the senior layer. Both tokenized legs therefore sit above a cushion the operator funds itself, which is the reverse of the arrangement everywhere else in this survey.
 
-Pricing is fixed rather than adaptive. Both legs earn a blended benchmark, the seven day
-trailing sUSDe yield for capital held on chain and SOFR for capital held off chain, and
-the senior leg adds 250 basis points to it while the mezzanine leg adds 850. The
-difference between the legs shows up more sharply in redemption than in yield: senior
-redeems instantly when liquidity allows, capped at 20 percent of daily capacity, while
-mezzanine redeems only in quarterly windows set by when regulatory collateral is
-released. That illiquidity is a property of the underlying treaty rather than a policy
-lever, so unlike a coverage gate it does not relax when conditions are calm.
+Pricing is fixed rather than adaptive. Both legs earn a blended benchmark, the seven day trailing sUSDe yield for capital held on chain and SOFR for capital held off chain, and the senior leg adds 250 basis points to it while the mezzanine leg adds 850. The difference between the legs shows up more sharply in redemption than in yield: senior redeems instantly when liquidity allows, capped at 20 percent of daily capacity, while mezzanine redeems only in quarterly windows set by when regulatory collateral is released. That illiquidity is a property of the underlying treaty rather than a policy lever, so unlike a coverage gate it does not relax when conditions are calm.
 
-Provides an asset pool that is genuinely uncorrelated with the rest of DeFi, a
-valuation that is an actuarial estimate reported in from off chain, a three layer
-waterfall, and settlement. There is no coverage test in the sense used here. Re is also
-the largest protocol in this survey by a wide margin, with about 202 million dollars in
-the senior leg alone. Sources:
-[Re documentation](https://docs.re.xyz/),
-[how the protocol works](https://docs.re.xyz/protocol/how-the-re-protocol-works). Full
-study in [`11-study-re`](../11-study-re/README.md).
+Provides an asset pool that is genuinely uncorrelated with the rest of DeFi, a valuation that is an actuarial estimate reported in from off chain, a three layer waterfall, and settlement. There is no coverage test in the sense used here. Re is also the largest protocol in this survey by a wide margin, with about 202 million dollars in the senior leg alone. Sources: [Re documentation](https://docs.re.xyz/), [how the protocol works](https://docs.re.xyz/protocol/how-the-re-protocol-works). Full study in [`11-study-re`](../11-study-re/README.md).
 
 ## Saffron and Waterfall DeFi (dormant / defunct)
 

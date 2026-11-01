@@ -1,21 +1,14 @@
 # Contributing
 
-This is an open research repository on tranching. Corrections, better sources and new
-material are welcome. Contributions are taken through issues, and the text in this
-repository is written and maintained by its author. The standards applied to material are
-set out in [`METHOD.md`](./METHOD.md) and are worth reading before opening an issue.
+This is an open research repository on tranching. Corrections, better sources and new material are welcome. Contributions are taken through issues, and the text in this repository is written and maintained by its author. The standards applied to material are set out in [`METHOD.md`](./METHOD.md) and are worth reading before opening an issue.
 
 ## Ways to contribute
 
-Open an issue to report an error, question a claim, point to a better source, or propose a
-protocol worth covering. Issues are the open work thread here. Pull requests are not
-merged; a correction or new material proposed in an issue is written into the documents
-with credit in the issue thread.
+Open an issue to report an error, question a claim, point to a better source, or propose a protocol worth covering. Issues are the open work thread here. Pull requests are not merged; a correction or new material proposed in an issue is written into the documents with credit in the issue thread.
 
 ## What goes where
 
-Every directory holds exactly one document. Additions extend the relevant document rather
-than adding a file beside it.
+Every directory holds exactly one document. Additions extend the relevant document rather than adding a file beside it.
 
 | Subject | Document |
 |---|---|
@@ -28,32 +21,20 @@ than adding a file beside it.
 | A close reading of one protocol | A numbered study directory |
 | A source worth recording | [`SOURCES.md`](./SOURCES.md) |
 
-A new protocol study is a new numbered directory containing one `README.md`, added to the
-table in the root [`README.md`](./README.md).
+A new protocol study is a new numbered directory containing one `README.md`, added to the table in the root [`README.md`](./README.md).
 
 ## Standards for material
 
-Cite a primary source where one exists, at the point the claim is made. Prefer a
-protocol's technical documentation, a public repository, or an independent review over a
-secondary write up.
+Cite a primary source where one exists, at the point the claim is made. Prefer a protocol's technical documentation, a public repository, or an independent review over a secondary write up.
 
-Say when something is unverified. Several passages here carry an explicit note that a
-figure or a token standard could not be confirmed, and that is strongly preferred to a
-confident guess. Terms with no source at all belong in
-[`06-optimizations`](./06-optimizations/README.md).
+Say when something is unverified. Several passages here carry an explicit note that a figure or a token standard could not be confirmed, and that is strongly preferred to a confident guess. Terms with no source at all belong in [`06-optimizations`](./06-optimizations/README.md).
 
-Describe live systems. Where a protocol has replaced the architecture it became known
-for, the current one is the subject and the earlier one appears only where the current one
-cannot be understood without it.
+Describe live systems. Where a protocol has replaced the architecture it became known for, the current one is the subject and the earlier one appears only where the current one cannot be understood without it.
 
-Leave implementation detail to the protocols. Contract inventories, addresses and source
-excerpts are not reproduced here. Where a design decision has an economic consequence,
-record the consequence.
+Leave implementation detail to the protocols. Contract inventories, addresses and source excerpts are not reproduced here. Where a design decision has an economic consequence, record the consequence.
 
 Write in stacked paragraphs with headings that are statements. No diagrams.
 
 ## Licensing
 
-Material proposed in an issue may be included under the licenses of this repository: CC BY
-4.0 for prose and MIT for code. See [`LICENSE-CC-BY-4.0`](./LICENSE-CC-BY-4.0) and
-[`LICENSE`](./LICENSE).
+Material proposed in an issue may be included under the licenses of this repository: CC BY 4.0 for prose and MIT for code. See [`LICENSE-CC-BY-4.0`](./LICENSE-CC-BY-4.0) and [`LICENSE`](./LICENSE).

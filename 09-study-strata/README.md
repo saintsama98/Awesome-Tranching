@@ -1,40 +1,14 @@
 # Strata
 
-> Study of a live system. One tranching engine, several unrelated yield sources, and a
-> published parameter set per market. This document works through the economics from what
-> enters the structure to what each party is left holding.
+> Study of a live system. One tranching engine, several unrelated yield sources, and a published parameter set per market. This document works through the economics from what enters the structure to what each party is left holding.
 
-Strata is a generalized risk tranching protocol. A single engine splits a yield source
-into a senior and a junior tranche, and the same engine has been pointed at several
-different strategies without being rewritten for any of them. It launched on Ethena USDe
-in October 2025 and has since been extended to other sources including Neutrl NUSD,
-Hastra PRIME and Saturn USDat. Reported value locked is roughly 78 million dollars, with
-a cumulative figure above 160 million cited by the protocol.
+Strata is a generalized risk tranching protocol. A single engine splits a yield source into a senior and a junior tranche, and the same engine has been pointed at several different strategies without being rewritten for any of them. It launched on Ethena USDe in October 2025 and has since been extended to other sources including Neutrl NUSD, Hastra PRIME and Saturn USDat. Reported value locked is roughly 78 million dollars, with a cumulative figure above 160 million cited by the protocol.
 
-It is the most useful protocol in this repository for a reason unrelated to its size.
-Strata publishes the parameters that drive its yield split, market by market, and keeps
-them separate from the arithmetic that consumes them. The invariant, the loss branch and
-the accrual are exact and auditable. The values that decide how the split behaves are
-declared numbers with names, published per market, and changeable only behind a timelock.
-That is the separation argued for in
-[`../01-fundamentals/`](../01-fundamentals/README.md), running in production across
-several heterogeneous strategies at once, and it is rare enough to be worth studying by
-someone with no interest in the protocol itself.
+It is the most useful protocol in this repository for a reason unrelated to its size. Strata publishes the parameters that drive its yield split, market by market, and keeps them separate from the arithmetic that consumes them. The invariant, the loss branch and the accrual are exact and auditable. The values that decide how the split behaves are declared numbers with names, published per market, and changeable only behind a timelock. That is the separation argued for in [`../01-fundamentals/`](../01-fundamentals/README.md), running in production across several heterogeneous strategies at once, and it is rare enough to be worth studying by someone with no interest in the protocol itself.
 
-The parameters below are the whole of the calibration surface. The baseline premium the
-senior tranche always pays runs from 5 percent on Hastra PRIME to 100 percent on Saturn
-USDat. The maximum additional premium accruing as senior value grows runs from 0 percent
-on Saturn to 15 percent on most others. The exponent controlling how quickly the premium
-rises is 0.3 in every market without exception, which turns out to matter a great deal and
-is the subject of Section 4.3.
+The parameters below are the whole of the calibration surface. The baseline premium the senior tranche always pays runs from 5 percent on Hastra PRIME to 100 percent on Saturn USDat. The maximum additional premium accruing as senior value grows runs from 0 percent on Saturn to 15 percent on most others. The exponent controlling how quickly the premium rises is 0.3 in every market without exception, which turns out to matter a great deal and is the subject of Section 4.3.
 
-The subject of what follows is the money: what enters the structure, what event causes it
-to be measured, the rule by which it is divided, the order in which loss is borne, and the
-levers by which each of those may be altered. Every figure and formula is taken from the
-published documentation and cited inline. Quantities derived rather than quoted are marked
-as such and the derivation is shown. This account is documentation led rather than source
-led, because the contracts are deployed and audited but were not published at the time of
-writing.
+The subject of what follows is the money: what enters the structure, what event causes it to be measured, the rule by which it is divided, the order in which loss is borne, and the levers by which each of those may be altered. Every figure and formula is taken from the published documentation and cited inline. Quantities derived rather than quoted are marked as such and the derivation is shown. This account is documentation led rather than source led, because the contracts are deployed and audited but were not published at the time of writing.
 
 ---
 
@@ -42,23 +16,9 @@ writing.
 
 Strata is not a yield source. It is a wrapper that interposes a two tranche capital structure between a depositor and an external yield strategy, and it is deliberately generic over that strategy: the same engine is applied to a delta neutral synthetic dollar (Ethena), a market neutral fund (Neutrl, M1 Capital), a tokenized preferred equity dividend (Strategy's STRC via Saturn), and a warehouse lending facility financing home equity lines of credit (Figure via Hastra). Source: [Protocol Overview](https://docs.strata.markets/technical-documentation/protocol-overview), [market pages](https://docs.strata.markets/).
 
-Each market is assembled from the same set of functional parts, and it is worth naming
-them by what they do rather than by what they are called, because the division of labor
-is the design. There is a senior claim and a junior claim, both of which are transferable
-across chains. There is an orchestrator that sequences the accounting and the calls into
-the strategy. There is a calculation layer that is pure, holding no assets and computing
-the value of each claim and the exchange rates between them. There is a strategy that
-deploys, stakes and retrieves assets and reports what the whole position is worth. There
-is a feed that pushes an external benchmark rate on chain. There is a set of deferred
-settlement locks, one for assets and one for shares and one that passes through the
-unbonding of the underlying. And there is a configuration layer through which every
-parameter change must pass, in two steps and behind a delay.
+Each market is assembled from the same set of functional parts, and it is worth naming them by what they do rather than by what they are called, because the division of labor is the design. There is a senior claim and a junior claim, both of which are transferable across chains. There is an orchestrator that sequences the accounting and the calls into the strategy. There is a calculation layer that is pure, holding no assets and computing the value of each claim and the exchange rates between them. There is a strategy that deploys, stakes and retrieves assets and reports what the whole position is worth. There is a feed that pushes an external benchmark rate on chain. There is a set of deferred settlement locks, one for assets and one for shares and one that passes through the unbonding of the underlying. And there is a configuration layer through which every parameter change must pass, in two steps and behind a delay.
 
-The separation that matters is the third of those. The layer that computes what each
-tranche is worth holds nothing and can move nothing, so an error in the valuation is a
-mispricing rather than a theft. That is the same discipline Centrifuge applied in its
-earlier work and the same discipline Royco applies today, and it is close to a
-precondition for a tranched structure being auditable at all.
+The separation that matters is the third of those. The layer that computes what each tranche is worth holds nothing and can move nothing, so an error in the valuation is a mispricing rather than a theft. That is the same discipline Centrifuge applied in its earlier work and the same discipline Royco applies today, and it is close to a precondition for a tranched structure being auditable at all.
 
 ---
 
@@ -278,15 +238,7 @@ The consequence worth stating precisely: **Case B fires on a yield shortfall, no
 
 The [Cyfrin audit](https://github.com/Cyfrin/cyfrin-audit-reports/blob/main/reports/2025-10-08-cyfrin-strata-tranches-v2.0.pdf) publishes the splitting block, which shows two properties the prose documentation does not:
 
-The transfer to the senior tranche is capped, and the cap is the economically important
-part. Two things follow from how the debit is bounded. The invariant of Section 3 is
-enforced rather than merely asserted, so a division that failed to conserve value would
-not settle at all. And the senior claim on the junior tranche is bounded by the junior
-balance less one whole unit, which means the senior floor is not an unconditional
-entitlement even before the junior tranche is legally exhausted. It is an entitlement
-capped at what the junior tranche actually holds, after which the senior claim reverts to
-whatever the strategy earned. The reversion to base yield on junior exhaustion is
-therefore a binding term of the instrument and not only a statement in prose.
+The transfer to the senior tranche is capped, and the cap is the economically important part. Two things follow from how the debit is bounded. The invariant of Section 3 is enforced rather than merely asserted, so a division that failed to conserve value would not settle at all. And the senior claim on the junior tranche is bounded by the junior balance less one whole unit, which means the senior floor is not an unconditional entitlement even before the junior tranche is legally exhausted. It is an entitlement capped at what the junior tranche actually holds, after which the senior claim reverts to whatever the strategy earned. The reversion to base yield on junior exhaustion is therefore a binding term of the instrument and not only a statement in prose.
 
 First, the invariant of Section 3 is **enforced by revert**, not merely asserted in documentation. Second, and more consequentially, the senior's claim on the junior is bounded by `saturatingSub(jrtNavT1, 1e18)`: the transfer cannot drive the junior net asset value below one whole unit. The senior floor is therefore not an unconditional entitlement even before the junior tranche is legally exhausted: it is an entitlement *capped at the junior balance less one unit*, after which the senior necessarily reverts to whatever the strategy earned. The reversion to base yield on junior exhaustion is thus a coded term, not only a prose statement.
 
@@ -351,10 +303,7 @@ Every quantity in Sections 4 through 7 is a mutable parameter. The published rol
 | `PROPOSER_CONFIG_ROLE` | `scheduleExitFeeChange` | none (proposal only) |
 | `OWNER_ROLE` | APR feed and provider, `setReserveBps`, `setFeeRetentionBps`, `setMinimumJrtSrtRatio`, `setMinimumJrtSrtRatioBuffer`, `setRoundStaleAfter` | 48h |
 
-Custody sits with an administrative multisig of three of four and an operational
-multisig of two of three, behind timelocks of forty eight and twenty four hours
-respectively. The addresses are published and are omitted here because they are an
-implementation detail rather than an economic one.
+Custody sits with an administrative multisig of three of four and an operational multisig of two of three, behind timelocks of forty eight and twenty four hours respectively. The addresses are published and are omitted here because they are an implementation detail rather than an economic one.
 
 The material observation: `setRiskParameters`, which carries `x`, `y`, `k`, and the floor, sits behind a **24-hour** delay, while `setReserveBps` and `setFeeRetentionBps` sit behind 48 hours. The senior tranche's "guaranteed minimum yield" is thus a governance commitment revocable within a day, not a property of the contract. The rate feed itself is updatable with no delay at all. Any standard that intends the senior guarantee to be an invariant rather than a policy must locate the floor somewhere other than a mutable configuration slot, or must bound the direction and magnitude of permitted changes at the contract level.
 
