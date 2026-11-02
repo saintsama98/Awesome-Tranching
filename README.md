@@ -54,7 +54,7 @@ Sources are cited inline and are preferably primary: a specification, a reposito
 
 There are no diagrams. Everything is prose, tables, or the formulas a protocol publishes. Deprecated systems are covered only where a live system cannot be understood without them.
 
-## Status
+## Contributing
 
 Ongoing research. Corrections, better sources and new material are welcome. Contributions are taken through issues; see [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`METHOD.md`](./METHOD.md).
 
